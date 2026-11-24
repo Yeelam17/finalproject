@@ -1,0 +1,33 @@
+{
+  "title": "Terminology in Translation: Food Science and Nutrition in English and Chinese",
+  "source": "National Academy for Educational Research (NAER), 樂詞網",
+  "source_dataset": "農學名詞-食品科學與營養學名詞",
+  "source_file": "naer_food_science_nutrition.ods",
+  "source_sha256": "2f6e0d21fddee51229a680f40cb3db78092a2fa513a93d846b8c1e7b65723333",
+  "source_url": "https://terms.naer.edu.tw/",
+  "license": "NAER Government Website Open Data Declaration: reuse and adaptation permitted with attribution to NAER; third-party rights and moral rights still apply.",
+  "license_url": "https://terms.naer.edu.tw/mysite/about/2/",
+  "collected": "2026-11-24",
+  "generated": "2026-11-24",
+  "rows": 5691,
+  "raw_rows": 5691,
+  "missing_cells": 0,
+  "multi_equivalent": 965,
+  "duplicate_normalized_terms": 1,
+  "qa_size": 50,
+  "qa_seed": 2026,
+  "categories": {
+    "calque_literal": 2451,
+    "semantic_equivalent": 2994,
+    "hybrid": 155,
+    "explicitation": 89,
+    "borrowing": 2
+  },
+  "orientations": {
+    "source": 2453,
+    "target": 3083,
+    "mixed": 155
+  },
+  "classification_method": "Codex-assisted, deterministic rule audit, version 1.0",
+  "human_checked": 0
+}

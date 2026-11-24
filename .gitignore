@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+__pycache__/
+*.pyc
+.DS_Store
+tmp/
+*.log
+/*.pdf
+/*.ods

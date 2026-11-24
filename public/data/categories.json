@@ -1,0 +1,32 @@
+[
+  {
+    "id": "borrowing",
+    "label_en": "Borrowing / transliteration",
+    "label_zh": "借譯／音譯",
+    "orientation": "source"
+  },
+  {
+    "id": "calque_literal",
+    "label_en": "Calque / literal translation",
+    "label_zh": "仿譯／直譯",
+    "orientation": "source"
+  },
+  {
+    "id": "semantic_equivalent",
+    "label_en": "Semantic equivalent / modulation",
+    "label_zh": "語意對等／轉換",
+    "orientation": "target"
+  },
+  {
+    "id": "explicitation",
+    "label_en": "Explicitation",
+    "label_zh": "顯化",
+    "orientation": "target"
+  },
+  {
+    "id": "hybrid",
+    "label_en": "Hybrid rendering",
+    "label_zh": "混合譯法",
+    "orientation": "mixed"
+  }
+]
