@@ -24,6 +24,7 @@ const applyQaDecisions = (
   entries: CorpusEntry[],
   decisions: QaDecisions,
 ): CorpusEntry[] =>
+  // Review data stays local until its JSON export is incorporated into the corpus.
   entries.map((entry) =>
     decisions[entry.id]?.status === "confirmed"
       ? { ...entry, human_checked: true }
@@ -81,6 +82,7 @@ export default function App() {
   const filtered = useFilteredCorpus(entries, filters);
 
   useEffect(() => {
+    // Keep assistive technology aligned with the visual language switch.
     document.documentElement.lang = language === "en" ? "en" : "zh-Hant";
   }, [language]);
 

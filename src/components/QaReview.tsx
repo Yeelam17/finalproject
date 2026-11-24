@@ -49,6 +49,7 @@ export function QaReview({
   const decision = entry ? decisions[entry.id] : undefined;
 
   const exportReview = () => {
+    // The exported JSON is the bridge from browser-local review to published data.
     downloadText(
       "terminology-in-translation-review.json",
       JSON.stringify(

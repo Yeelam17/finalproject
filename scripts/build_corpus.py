@@ -257,6 +257,7 @@ def clean_text(value: str) -> str:
 
 
 def read_ods_rows(path: Path) -> list[list[str]]:
+    """Read one ODS sheet without depending on LibreOffice or third-party packages."""
     with zipfile.ZipFile(path) as archive:
         content = archive.read("content.xml")
     root = ET.fromstring(content)
@@ -300,6 +301,7 @@ def source_url(source_text: str) -> str:
 
 
 def classify(source_text: str, target: str) -> tuple[str, str, float, str]:
+    """Apply the public codebook in priority order and retain evidence for review."""
     primary, options = primary_target(target)
     source_plain = clean_text(source_text)
     target_plain = clean_text(primary)
@@ -437,6 +439,7 @@ def build_rows() -> tuple[list[dict], list[list[str]]]:
 
 
 def add_qa_sample(entries: list[dict]) -> None:
+    """Select a reproducible 50-record QA sample from the complete corpus."""
     ids = [entry["id"] for entry in entries]
     random.Random(RANDOM_SEED).shuffle(ids)
     selected = set(ids[:QA_SIZE])

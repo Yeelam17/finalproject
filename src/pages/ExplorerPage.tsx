@@ -45,6 +45,7 @@ export function ExplorerPage({
   const checkedCount = entries.filter((entry) => entry.human_checked).length;
 
   const sorted = useMemo(() => {
+    // Sorting happens after the shared filters so the grid and all charts agree.
     const factor = direction === "asc" ? 1 : -1;
     return [...filtered].sort((a, b) => {
       const left = a[sort as keyof CorpusEntry];
@@ -95,6 +96,7 @@ export function ExplorerPage({
   };
 
   const selectTerm = (entry: CorpusEntry) => {
+    // A selected term is a filter and must remain shareable in the URL.
     commit({ q: entry.source_text, term: entry.id, page: "1" });
   };
 

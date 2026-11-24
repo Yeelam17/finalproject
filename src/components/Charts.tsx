@@ -113,6 +113,7 @@ export function SankeyChart({ entries, language, applyFilter }: ChartProps) {
       });
     }
 
+    // Aggregate records before layout so 5,691 terms become a small, readable flow.
     for (const entry of entries) {
       const category = `c:${entry.category}`;
       if (detail === "full") {
@@ -315,6 +316,7 @@ export function TreemapChart({ entries, language, applyFilter }: ChartProps) {
 
   const leaves = useMemo(() => {
     const root: TreeDatum = { name: "corpus", children: [] };
+    // Both grouping modes preserve the same leaf strategies and filter semantics.
     const topGroups =
       grouping === "orientation"
         ? (["source", "target", "mixed"] as const)
@@ -484,6 +486,7 @@ export function ScatterChart({
 
   const points = useMemo(
     () =>
+      // Length is a descriptive comparison, not a quality score.
       entries.map((entry) => ({
         entry,
         x: sourceLength(entry.source_text),

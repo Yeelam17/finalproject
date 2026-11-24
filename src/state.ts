@@ -20,6 +20,7 @@ export const useHashState = (): [
   );
 
   useEffect(() => {
+    // Hash routing keeps deep links static-host safe without a server-side fallback.
     const handleHash = () => setState(parseRoute(window.location.hash));
     window.addEventListener("hashchange", handleHash);
     return () => window.removeEventListener("hashchange", handleHash);
@@ -54,6 +55,7 @@ export const useQaDecisions = (): [
   });
 
   useEffect(() => {
+    // Persist progress per browser; the QA drawer can export an auditable snapshot.
     window.localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(decisions));
   }, [decisions]);
 
