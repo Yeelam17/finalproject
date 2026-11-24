@@ -20,7 +20,7 @@ pnpm data
 pnpm dev
 ```
 
-The generated static site is written to `docs/` when running `pnpm build`. GitHub Pages should publish this site from the `main` branch's `/docs` directory.
+The generated static site is written to `docs/` when running `pnpm build`. The GitHub Actions workflow in `.github/workflows/pages.yml` builds and deploys the static artifact to GitHub Pages on each push to `main`.
 
 The public URL is `https://yeelam17.github.io/finalproject/`.
 
