@@ -5,7 +5,7 @@ export default defineConfig({
   root: "app",
   publicDir: "../public",
   plugins: [react()],
-  base: process.env.VITE_BASE ?? "/finalproject/",
+  base: process.env.VITE_BASE ?? "./",
   build: {
     outDir: "../docs",
     emptyOutDir: true,
