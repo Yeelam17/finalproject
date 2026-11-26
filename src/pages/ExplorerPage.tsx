@@ -94,7 +94,11 @@ export function ExplorerPage({
       comparison: value !== "all" ? value : null,
     };
     commit({
-      [key === "equivalence" ? "equiv" : key]: paramMap[key],
+      [key === "equivalence"
+        ? "equiv"
+        : key === "comparison"
+          ? "compare"
+          : key]: paramMap[key],
       term: null,
       page: "1",
     });
