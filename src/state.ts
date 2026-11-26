@@ -35,7 +35,6 @@ export const useHashState = (): [
     const next = buildHash(route, params);
     if (window.location.hash === next) return;
     window.location.hash = next;
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return [state, navigate];
@@ -103,7 +102,9 @@ export const filtersFromParams = (params: URLSearchParams): Filters => ({
     "all",
   region: (params.get("region") as RegionId | "all" | null) ?? "all",
   comparison:
-    (params.get("compare") as ComparisonStatus | "all" | null) ?? "all",
+    (params.get("compare") ??
+      params.get("comparison") ??
+      "all") as ComparisonStatus | "all",
 });
 
 export const languageFromParams = (params: URLSearchParams): Language =>
