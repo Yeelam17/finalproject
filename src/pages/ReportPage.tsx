@@ -1,9 +1,16 @@
-import type { CorpusEntry, Language, Manifest } from "../types";
+import type {
+  ComparisonStatus,
+  CorpusEntry,
+  Language,
+  Manifest,
+} from "../types";
 import { REPORT } from "../content";
 import {
   CATEGORY_META,
   CATEGORY_ORDER,
+  COMPARISON_META,
   categoryLabel,
+  comparisonSummary,
   formatNumber,
   hanLength,
   percentage,
@@ -35,6 +42,7 @@ export function ReportPage({
   const averageChinese =
     entries.reduce((sum, entry) => sum + hanLength(entry.target_primary), 0) /
     entries.length;
+  const comparison = comparisonSummary(entries);
 
   return (
     <article className="page report-page">
@@ -48,10 +56,15 @@ export function ReportPage({
             {formatNumber(manifest.rows)}
           </span>
           <span>
-            {language === "en" ? "Collected" : "擷取"} · {manifest.collected}
+            {language === "en" ? "Taiwan" : "臺灣"} · {manifest.collected}
           </span>
           <span>
-            {language === "en" ? "Source" : "來源"} · NAER 樂詞網
+            {language === "en" ? "Mainland" : "中國大陸"} ·{" "}
+            {manifest.mainland_collected}
+          </span>
+          <span>
+            {language === "en" ? "Sources" : "來源"} · NAER + China Food
+            Composition Table
           </span>
         </div>
       </header>
@@ -100,7 +113,7 @@ export function ReportPage({
                 <p key={paragraph}>{paragraph}</p>
               ))}
 
-              {index === 4 && (
+              {index === 5 && (
                 <>
                   <figure className="report-figure">
                     <div className="report-figure__header">
@@ -109,8 +122,8 @@ export function ReportPage({
                       </span>
                       <h3>
                         {language === "en"
-                          ? "Translation strategies across all 5,691 terms"
-                          : "全部 5,691 筆詞條的翻譯策略"}
+                          ? `Translation strategies across ${formatNumber(manifest.rows)} records`
+                          : `全部 ${formatNumber(manifest.rows)} 筆詞條的翻譯策略`}
                       </h3>
                     </div>
                     <div className="distribution-visual">
@@ -134,6 +147,63 @@ export function ReportPage({
                       {language === "en"
                         ? "Semantic equivalents form the largest group, while source-shaped calques remain a substantial minority. AI-assisted classifications remain provisional until human review."
                         : "語意對等詞占比最高，但源語形塑的仿譯仍占相當比例。AI 分類在人工校閱前仍屬暫定結果。"}
+                    </figcaption>
+                  </figure>
+
+                  <figure className="report-figure">
+                    <div className="report-figure__header">
+                      <span className="section-kicker">
+                        Figure 2 ·{" "}
+                        {language === "en"
+                          ? "Regional difference"
+                          : "跨地差異"}
+                      </span>
+                      <h3>
+                        {language === "en"
+                          ? "How matched food names differ across regions"
+                          : "配對食物名稱在兩地之間的差異"}
+                      </h3>
+                    </div>
+                    <div className="distribution-visual">
+                      {(
+                        [
+                          "same",
+                          "script_only",
+                          "partial",
+                          "different",
+                        ] as ComparisonStatus[]
+                      ).map((status) => (
+                        <div key={status} className="distribution-row">
+                          <span>
+                            {COMPARISON_META[status][
+                              language === "en" ? "en" : "zh"
+                            ]}
+                          </span>
+                          <div className="distribution-track">
+                            <i
+                              style={{
+                                width: `${
+                                  comparison.total
+                                    ? (comparison.counts[status] /
+                                        comparison.total) *
+                                      100
+                                    : 0
+                                }%`,
+                                background: COMPARISON_META[status].color,
+                              }}
+                            />
+                          </div>
+                          <strong>{comparison.counts[status]}</strong>
+                          <small>
+                            {percentage(comparison.counts[status], comparison.total)}
+                          </small>
+                        </div>
+                      ))}
+                    </div>
+                    <figcaption>
+                      {language === "en"
+                        ? `Across ${comparison.total} matched English concepts, ${comparison.counts.same} use identical wording, ${comparison.counts.script_only} differ only through Chinese script, ${comparison.counts.partial} share a partial term, and ${comparison.counts.different} use substantively different terminology.`
+                        : `在 ${comparison.total} 個可配對英文概念中，${comparison.counts.same} 個用詞完全相同，${comparison.counts.script_only} 個只有中文字形差異，${comparison.counts.partial} 個有部分詞語重疊，${comparison.counts.different} 個使用實質不同的術語。`}
                     </figcaption>
                   </figure>
 
@@ -185,6 +255,10 @@ export function ReportPage({
               <li>
                 Cabré, M. Teresa. 1999. <em>Terminology: Theory, Methods, and
                 Applications</em>. Amsterdam: John Benjamins.
+              </li>
+              <li>
+                Sanotsu. “china-food-composition-data.” Accessed November 26,
+                2026. https://github.com/Sanotsu/china-food-composition-data.
               </li>
               <li>
                 National Academy for Educational Research. “樂詞網.” Accessed

@@ -1,14 +1,24 @@
 import { useMemo } from "react";
+import type { CSSProperties } from "react";
 import { SankeyChart, ScatterChart, TreemapChart } from "../components/Charts";
 import { DataTable, FilterBar, TermDetail } from "../components/ExplorerControls";
 import type { Filters } from "../state";
-import type { CorpusEntry, Language, Manifest, UrlState } from "../types";
+import type {
+  ComparisonStatus,
+  CorpusEntry,
+  Language,
+  Manifest,
+  UrlState,
+} from "../types";
 import { UI } from "../content";
 import {
   asset,
   CATEGORY_META,
+  COMPARISON_META,
+  comparisonSummary,
   formatNumber,
   percentage,
+  REGION_META,
 } from "../lib";
 
 interface ExplorerPageProps {
@@ -43,6 +53,7 @@ export function ExplorerPage({
   const page = Number.parseInt(params.get("page") ?? "1", 10) || 1;
   const selected = entries.find((entry) => entry.id === selectedId);
   const checkedCount = entries.filter((entry) => entry.human_checked).length;
+  const comparison = comparisonSummary(entries);
 
   const sorted = useMemo(() => {
     // Sorting happens after the shared filters so the grid and all charts agree.
@@ -79,6 +90,8 @@ export function ExplorerPage({
       human: value !== "all" ? value : null,
       equivalence: value !== "all" ? value : null,
       orientation: value !== "all" ? value : null,
+      region: value !== "all" ? value : null,
+      comparison: value !== "all" ? value : null,
     };
     commit({
       [key === "equivalence" ? "equiv" : key]: paramMap[key],
@@ -104,6 +117,8 @@ export function ExplorerPage({
     category?: string;
     orientation?: string;
     equiv?: string;
+    region?: string;
+    compare?: string;
   }) => {
     commit({ ...patch, term: null, page: "1" });
   };
@@ -162,9 +177,11 @@ export function ExplorerPage({
             <span>{copy.multiRows}</span>
           </div>
           <div>
-            <strong>{manifest.categories.semantic_equivalent}</strong>
+            <strong>{formatNumber(manifest.matched_unique_english_terms)}</strong>
             <span>
-              {language === "en" ? "semantic equivalents" : "語意對等詞"}
+              {language === "en"
+                ? "matched English concepts"
+                : "可配對英文概念"}
             </span>
           </div>
           <div>
@@ -181,6 +198,9 @@ export function ExplorerPage({
             <a href={asset("data/source/naer_food_science_nutrition.ods")} download>
               ODS <span aria-hidden="true">↓</span>
             </a>
+            <a href={asset("data/source/china_food_composition_matched.csv")} download>
+              CN <span aria-hidden="true">↓</span>
+            </a>
           </div>
         </aside>
       </section>
@@ -195,6 +215,72 @@ export function ExplorerPage({
         onClear={clearFilters}
         onReview={openQa}
       />
+
+      <section className="comparison-summary" aria-labelledby="comparison-title">
+        <div className="comparison-summary__intro">
+          <span className="eyebrow">
+            {language === "en" ? "Regional comparison" : "跨地比較"}
+          </span>
+          <h2 id="comparison-title">
+            {language === "en"
+              ? "Is it a different word, or only a different script?"
+              : "這是用詞不同，還是只是字形不同？"}
+          </h2>
+          <p>
+            {language === "en"
+              ? "Taiwan's Traditional Chinese is normalized to Simplified Chinese before comparison, so character conversion is not mistaken for a translation choice."
+              : "比較前先把臺灣繁體詞轉為簡體，避免把單純的字形轉換誤判為翻譯選擇。"}
+          </p>
+        </div>
+        <div className="comparison-options">
+          {(
+            ["same", "script_only", "partial", "different"] as ComparisonStatus[]
+          ).map((status) => {
+            const count = comparison.counts[status];
+            const meta = COMPARISON_META[status];
+            return (
+              <button
+                key={status}
+                type="button"
+                className="comparison-option"
+                style={
+                  {
+                    "--comparison-color": meta.color,
+                  } as CSSProperties
+                }
+                onClick={() => filterPatch({ compare: status })}
+              >
+                <span>{meta[language === "en" ? "en" : "zh"]}</span>
+                <strong>{count}</strong>
+              </button>
+            );
+          })}
+        </div>
+        <div className="comparison-bar" aria-hidden="true">
+          {(
+            ["same", "script_only", "partial", "different"] as ComparisonStatus[]
+          ).map((status) => (
+            <i
+              key={status}
+              style={{
+                width: `${comparison.total ? (comparison.counts[status] / comparison.total) * 100 : 0}%`,
+                background: COMPARISON_META[status].color,
+              }}
+            />
+          ))}
+        </div>
+        <div className="region-key">
+          {(Object.keys(REGION_META) as Array<keyof typeof REGION_META>).map(
+            (region) => (
+              <span key={region}>
+                <i style={{ background: REGION_META[region].color }} />
+                {REGION_META[region][language === "en" ? "en" : "zh"]} ·{" "}
+                {formatNumber(manifest.regions[region])}
+              </span>
+            ),
+          )}
+        </div>
+      </section>
 
       {selected && (
         <TermDetail
@@ -212,8 +298,8 @@ export function ExplorerPage({
             </span>
             <h2 id="visual-title">
               {language === "en"
-                ? "Read the field through four lenses."
-                : "從四個角度閱讀這個領域。"}
+                ? "Compare regional choices through four lenses."
+                : "從四個角度比較兩地譯法。"}
             </h2>
           </div>
           <p>
@@ -235,8 +321,8 @@ export function ExplorerPage({
                 </h3>
                 <p>
                   {language === "en"
-                    ? "How do official terms move from translation orientation through a strategy into single or multiple Chinese equivalents?"
-                    : "官方術語如何從翻譯導向經由策略，流向單一或多重中文對等詞？"}
+                    ? "How do Taiwan and Mainland China differ in translation strategy and single- versus multiple-equivalent patterns?"
+                    : "臺灣與中國大陸在翻譯策略，以及單一或多重對等詞方面有何差異？"}
                 </p>
               </div>
             </header>
@@ -258,8 +344,8 @@ export function ExplorerPage({
                 </h3>
                 <p>
                   {language === "en"
-                    ? "Which translation orientation and strategy account for the largest share of the filtered corpus?"
-                    : "哪一種翻譯導向與策略占目前篩選語料的最大比例？"}
+                    ? "Which region and strategy account for the largest share of the filtered corpus?"
+                    : "哪一地區與策略占目前篩選語料的最大比例？"}
                 </p>
               </div>
             </header>
@@ -281,8 +367,8 @@ export function ExplorerPage({
                 </h3>
                 <p>
                   {language === "en"
-                    ? "How does English term length relate to the number of Chinese characters in the principal rendering?"
-                    : "英文詞條長度與主要中文譯法的字數之間有何關係？"}
+                    ? "How does English term length relate to Chinese character length in each region?"
+                    : "兩地譯法的中文字數與英文詞長有何關係？"}
                 </p>
               </div>
             </header>
@@ -361,6 +447,13 @@ export function ExplorerPage({
           >
             <span>ODS</span>
             <strong>{copy.downloadSource}</strong>
+          </a>
+          <a
+            href={asset("data/source/china_food_composition_matched.csv")}
+            download
+          >
+            <span>CN</span>
+            <strong>{copy.downloadMainland}</strong>
           </a>
         </div>
       </section>

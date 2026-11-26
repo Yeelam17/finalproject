@@ -1,11 +1,12 @@
 # Terminology in Translation
 
-A bilingual corpus explorer for the National Academy for Educational Research's food science and nutrition terminology. The site explores source-oriented and target-oriented translation strategies across 5,691 NAER term records.
+A bilingual corpus explorer comparing Taiwan's NAER food-science terminology with matched Mainland Chinese food names. The site combines 5,691 Taiwan records with 101 exact-English-name matches from the China Food Composition Table dataset, covering 91 shared concepts.
 
 ## Features
 
 - Search by English term, Traditional Chinese, or NAER term ID
 - Filters for strategy, human-check status, equivalence status, and translation orientation
+- Region and regional-difference filters, including Traditional-to-Simplified normalization
 - Linked Sankey diagram, treemap, scatter plot, and sortable data grid
 - Shareable URL state, including the selected source record
 - English and Traditional Chinese interfaces, report, and codebook
@@ -26,8 +27,10 @@ The public URL is `https://yeelam17.github.io/finalproject/`.
 
 ## Data
 
-The source ODS is preserved under `public/data/source/`. The reproducible build script writes the cleaned JSON, CSV, QA sample, and manifest under `public/data/`.
+The Taiwan ODS and matched Mainland name snapshot are preserved under `public/data/source/`. The reproducible build scripts write the cleaned JSON, CSV, QA sample, and manifest under `public/data/`.
 
 Run `pnpm check:data` to validate record counts, required fields, category totals, the 50-record QA sample, source checksum, and CSV/JSON reconciliation.
 
 NAER content is reused under its open-data declaration and must retain attribution to the National Academy for Educational Research (NAER) and the 樂詞網 terminology database.
+
+The Mainland comparison uses only matched bilingual food-name records from `Sanotsu/china-food-composition-data`; the full nutritional table is not republished. The repository implements no open licence, and the project owner confirmed permission for these matched records.

@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type {
   CategoryId,
+  ComparisonStatus,
   CorpusEntry,
   Language,
   OrientationId,
   QaDecisions,
+  RegionId,
   UrlState,
 } from "./types";
 import { buildHash, parseRoute } from "./lib";
@@ -83,6 +85,8 @@ export interface Filters {
   human: "all" | "yes" | "no";
   equivalence: "all" | "single" | "multiple";
   orientation: OrientationId | "all";
+  region: RegionId | "all";
+  comparison: ComparisonStatus | "all";
 }
 
 export const filtersFromParams = (params: URLSearchParams): Filters => ({
@@ -97,6 +101,9 @@ export const filtersFromParams = (params: URLSearchParams): Filters => ({
   orientation:
     (params.get("orientation") as OrientationId | "all" | null) ??
     "all",
+  region: (params.get("region") as RegionId | "all" | null) ?? "all",
+  comparison:
+    (params.get("compare") as ComparisonStatus | "all" | null) ?? "all",
 });
 
 export const languageFromParams = (params: URLSearchParams): Language =>
@@ -122,6 +129,15 @@ export const filterCorpus = (
     if (
       filters.orientation !== "all" &&
       entry.orientation !== filters.orientation
+    ) {
+      return false;
+    }
+    if (filters.region !== "all" && entry.region !== filters.region) {
+      return false;
+    }
+    if (
+      filters.comparison !== "all" &&
+      entry.comparison_status !== filters.comparison
     ) {
       return false;
     }

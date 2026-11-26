@@ -10,11 +10,19 @@ import {
   type SankeyNode,
 } from "d3-sankey";
 import { scaleLinear } from "d3-scale";
-import type { CorpusEntry, Language, OrientationId } from "../types";
+import type {
+  ComparisonStatus,
+  CorpusEntry,
+  Language,
+  OrientationId,
+  RegionId,
+} from "../types";
 import {
   CATEGORY_META,
   CATEGORY_ORDER,
+  COMPARISON_META,
   ORIENTATION_META,
+  REGION_META,
   categoryShortLabel,
   formatNumber,
   hanLength,
@@ -27,6 +35,8 @@ type FilterPatch = {
   category?: string;
   orientation?: string;
   equiv?: string;
+  region?: string;
+  compare?: string;
 };
 
 interface ChartProps {
@@ -46,7 +56,7 @@ const fullOrientationName = (id: OrientationId, language: Language) =>
 interface SankeyDatum {
   id: string;
   label: string;
-  kind: "orientation" | "strategy" | "equivalence";
+  kind: "region" | "orientation" | "strategy" | "equivalence";
   filter?: FilterPatch;
   color: string;
 }
@@ -78,13 +88,13 @@ export function SankeyChart({ entries, language, applyFilter }: ChartProps) {
       else flows.set(key, { source, target, value });
     };
 
-    for (const orientation of ["source", "target", "mixed"] as OrientationId[]) {
+    for (const region of ["TW", "CN"] as RegionId[]) {
       addNode({
-        id: `o:${orientation}`,
-        label: fullOrientationName(orientation, language),
-        kind: "orientation",
-        filter: { orientation },
-        color: ORIENTATION_META[orientation].color,
+        id: `r:${region}`,
+        label: REGION_META[region][language === "en" ? "en" : "zh"],
+        kind: "region",
+        filter: { region },
+        color: REGION_META[region].color,
       });
     }
     for (const category of CATEGORY_ORDER) {
@@ -117,7 +127,7 @@ export function SankeyChart({ entries, language, applyFilter }: ChartProps) {
     for (const entry of entries) {
       const category = `c:${entry.category}`;
       if (detail === "full") {
-        addFlow(`o:${entry.orientation}`, category);
+        addFlow(`r:${entry.region}`, category);
       }
       addFlow(
         category,
@@ -179,8 +189,8 @@ export function SankeyChart({ entries, language, applyFilter }: ChartProps) {
           >
             <option value="full">
               {language === "en"
-                ? "Orientation → strategy → equivalence"
-                : "導向 → 策略 → 對等"}
+              ? "Region → strategy → equivalence"
+              : "地區 → 策略 → 對等"}
             </option>
             <option value="compact">
               {language === "en"
@@ -308,24 +318,27 @@ interface TreeDatum {
 type TreeLeaf = HierarchyRectangularNode<TreeDatum>;
 
 export function TreemapChart({ entries, language, applyFilter }: ChartProps) {
-  const [grouping, setGrouping] = useState<"orientation" | "equivalence">(
-    "orientation",
-  );
+  const [grouping, setGrouping] = useState<
+    "region" | "orientation" | "equivalence"
+  >("region");
   const width = 760;
   const height = 430;
 
   const leaves = useMemo(() => {
     const root: TreeDatum = { name: "corpus", children: [] };
-    // Both grouping modes preserve the same leaf strategies and filter semantics.
     const topGroups =
-      grouping === "orientation"
+      grouping === "region"
+        ? (["TW", "CN"] as const)
+        : grouping === "orientation"
         ? (["source", "target", "mixed"] as const)
         : (["single", "multiple"] as const);
 
     for (const group of topGroups) {
       const groupNode: TreeDatum = {
         name:
-          grouping === "orientation"
+          grouping === "region"
+            ? REGION_META[group as RegionId][language === "en" ? "en" : "zh"]
+            : grouping === "orientation"
             ? fullOrientationName(group as OrientationId, language)
             : language === "en"
               ? group === "single"
@@ -335,13 +348,20 @@ export function TreemapChart({ entries, language, applyFilter }: ChartProps) {
                 ? "單一對等詞"
                 : "多重對等詞",
         children: [],
-        color: grouping === "orientation" ? ORIENTATION_META[group as OrientationId].color : "#8c2f2f",
+        color:
+          grouping === "region"
+            ? REGION_META[group as RegionId].color
+            : grouping === "orientation"
+              ? ORIENTATION_META[group as OrientationId].color
+              : "#8c2f2f",
       };
       for (const category of CATEGORY_ORDER) {
         const categoryEntries = entries.filter(
           (entry) =>
             entry.category === category &&
-            (grouping === "orientation"
+            (grouping === "region"
+              ? entry.region === group
+              : grouping === "orientation"
               ? entry.orientation === group
               : (entry.multi_equivalent ? "multiple" : "single") === group),
         );
@@ -379,9 +399,14 @@ export function TreemapChart({ entries, language, applyFilter }: ChartProps) {
           <select
             value={grouping}
             onChange={(event) =>
-              setGrouping(event.target.value as "orientation" | "equivalence")
+              setGrouping(
+                event.target.value as "region" | "orientation" | "equivalence",
+              )
             }
           >
+            <option value="region">
+              {language === "en" ? "Region" : "地區"}
+            </option>
             <option value="orientation">
               {language === "en" ? "Translation orientation" : "翻譯導向"}
             </option>
@@ -400,8 +425,8 @@ export function TreemapChart({ entries, language, applyFilter }: ChartProps) {
         role="img"
         aria-label={
           language === "en"
-            ? "Treemap of translation strategies grouped by orientation"
-            : "依翻譯導向分組的翻譯策略矩形樹圖"
+            ? "Treemap of translation strategies grouped by region or another field"
+            : "依地區或其他欄位分組的翻譯策略矩形樹圖"
         }
       >
         {leaves.map((leaf) => {
@@ -475,9 +500,9 @@ export function ScatterChart({
   selectedId,
   selectTerm,
 }: ScatterChartProps) {
-  const [colorBy, setColorBy] = useState<"category" | "orientation">(
-    "category",
-  );
+  const [colorBy, setColorBy] = useState<
+    "region" | "category" | "orientation"
+  >("region");
   const width = 760;
   const height = 420;
   const margin = { top: 24, right: 22, bottom: 54, left: 62 };
@@ -512,9 +537,14 @@ export function ScatterChart({
           <select
             value={colorBy}
             onChange={(event) =>
-              setColorBy(event.target.value as "category" | "orientation")
+              setColorBy(
+                event.target.value as "region" | "category" | "orientation",
+              )
             }
           >
+            <option value="region">
+              {language === "en" ? "Region" : "地區"}
+            </option>
             <option value="category">
               {language === "en" ? "Translation strategy" : "翻譯策略"}
             </option>
@@ -601,7 +631,9 @@ export function ScatterChart({
           </text>
           {points.map(({ entry, x, y }) => {
             const color =
-              colorBy === "category"
+              colorBy === "region"
+                ? REGION_META[entry.region].color
+                : colorBy === "category"
                 ? CATEGORY_META[entry.category].color
                 : ORIENTATION_META[entry.orientation].color;
             const selected = entry.id === selectedId;
@@ -637,7 +669,12 @@ export function ScatterChart({
         </g>
       </svg>
       <div className="chart-legend" aria-label="Chart legend">
-        {(colorBy === "category"
+        {(colorBy === "region"
+          ? (["TW", "CN"] as RegionId[]).map((region) => ({
+              label: REGION_META[region][language === "en" ? "en" : "zh"],
+              color: REGION_META[region].color,
+            }))
+          : colorBy === "category"
           ? CATEGORY_ORDER.map((category) => ({
               label: categoryShortLabel(category, language),
               color: CATEGORY_META[category].color,

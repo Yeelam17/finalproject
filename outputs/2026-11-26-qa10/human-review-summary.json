@@ -1,0 +1,26 @@
+{
+  "title": "10% human-review sample",
+  "generatedAt": "2026-11-26T04:00:00.000Z",
+  "sourceRows": 5792,
+  "targetRate": 0.1,
+  "sampleSize": 579,
+  "seed": 20261126,
+  "method": "Deterministic, proportionally stratified random sample by region and translation category.",
+  "regionCounts": {
+    "TW": 5691,
+    "CN": 101
+  },
+  "quotas": {
+    "TW": 569,
+    "CN": 10
+  },
+  "categoryCounts": {
+    "calque_literal": 246,
+    "semantic_equivalent": 304,
+    "explicitation": 12,
+    "hybrid": 16,
+    "borrowing": 1
+  },
+  "automatedPrecheck": "All selected records have required fields, a source pair, and a valid region/category value.",
+  "humanReviewStatus": "Pending: human_decision and human_checked are intentionally blank."
+}

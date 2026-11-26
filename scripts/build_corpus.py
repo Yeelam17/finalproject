@@ -19,9 +19,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "農學名詞-食品科學與營養學名詞壓縮檔_0.ods"
+MAINLAND_SOURCE = ROOT / "data" / "source" / "china_food_composition_matched.csv"
+MAINLAND_MANIFEST = (
+    ROOT / "data" / "source" / "china_food_composition_manifest.json"
+)
 OUT = ROOT / "public" / "data"
 RAW_OUT = OUT / "source"
 COLLECTED = "2026-11-24"
+GENERATED = "2026-11-26"
 RANDOM_SEED = 2026
 QA_SIZE = 50
 
@@ -386,6 +391,67 @@ def classify(source_text: str, target: str) -> tuple[str, str, float, str]:
     )
 
 
+def english_key(value: str) -> str:
+    value = unicodedata.normalize("NFKC", value or "").lower()
+    value = value.replace("‐", "-").replace("‑", "-")
+    value = re.sub(r"\s+", " ", value).strip()
+    return re.sub(r"\s*[（(][^）)]*[）)]\s*$", "", value).strip()
+
+
+def add_mainland_entries(entries: list[dict]) -> None:
+    """Append mainland records only when their English name matches a Taiwan entry."""
+    if not MAINLAND_SOURCE.exists() or not MAINLAND_MANIFEST.exists():
+        raise FileNotFoundError("Run scripts/import_mainland.py before building")
+    manifest = json.loads(MAINLAND_MANIFEST.read_text(encoding="utf-8"))
+    with MAINLAND_SOURCE.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    taiwan_ids = {entry["id"] for entry in entries if entry["region"] == "TW"}
+    for row in rows:
+        food_code = clean_text(row["foodCode"])
+        source_text = clean_text(row["englishName"])
+        target_text = clean_text(row["foodName"])
+        matched_ids = [
+            value for value in row["matched_taiwan_ids"].split(";") if value
+        ]
+        if not set(matched_ids).issubset(taiwan_ids):
+            raise ValueError(f"Unknown matched Taiwan ID for {food_code}")
+        category, evidence, confidence, _ = classify(source_text, target_text)
+        primary, alternatives = primary_target(target_text)
+        entries.append(
+            {
+                "id": f"CN-{food_code}",
+                "region": "CN",
+                "region_label": "Mainland China",
+                "source_record_id": food_code,
+                "source_text": source_text,
+                "target_text": target_text,
+                "target_primary": primary,
+                "target_alternatives": alternatives,
+                "source": (
+                    "China Food Composition Table, 6th edition — bilingual food-name "
+                    f"dataset, food code {food_code}, commit {manifest['commit'][:7]}, "
+                    "accessed 2026-11-26"
+                ),
+                "source_url": manifest["source_url"],
+                "category": category,
+                "orientation": CATEGORY_ORIENTATION[category],
+                "category_confidence": confidence,
+                "category_evidence": evidence,
+                "human_checked": False,
+                "multi_equivalent": len(alternatives) > 1,
+                "unit": "term",
+                "key_term": source_text,
+                "year": None,
+                "update_date": "2026-11-26",
+                "notes": "",
+                "english_key": english_key(source_text),
+                "food_category": clean_text(row["category"]),
+                "matched_taiwan_ids": matched_ids,
+            }
+        )
+
+
 def build_rows() -> tuple[list[dict], list[list[str]]]:
     raw_rows = read_ods_rows(SOURCE)
     if not raw_rows:
@@ -407,6 +473,9 @@ def build_rows() -> tuple[list[dict], list[list[str]]]:
         entries.append(
             {
                 "id": clean_text(term_id),
+                "region": "TW",
+                "region_label": "Taiwan",
+                "source_record_id": clean_text(term_id),
                 "source_text": source_text,
                 "target_text": target_text,
                 "target_primary": primary,
@@ -427,12 +496,16 @@ def build_rows() -> tuple[list[dict], list[list[str]]]:
                 "year": int(update_date[:4]) if re.match(r"\d{4}", update_date or "") else None,
                 "update_date": update_date,
                 "notes": "",
+                "english_key": english_key(source_text),
+                "food_category": "Food science and nutrition",
+                "matched_taiwan_ids": [],
             }
         )
+    add_mainland_entries(entries)
     entries.sort(key=lambda item: item["id"])
     seen_normalized: set[str] = set()
     for entry in entries:
-        normalized = entry["source_text"].casefold()
+        normalized = f"{entry['region']}:{entry['source_text'].casefold()}"
         entry["duplicate_normalized_term"] = normalized in seen_normalized
         seen_normalized.add(normalized)
     return entries, raw_rows
@@ -467,8 +540,16 @@ def main() -> None:
 
     ids = [entry["id"] for entry in entries]
     if len(ids) != len(set(ids)):
-        raise ValueError("Duplicate NAER term IDs found")
-    required = ("id", "source_text", "target_text", "source", "category")
+        raise ValueError("Duplicate corpus IDs found")
+    required = (
+        "id",
+        "region",
+        "source_text",
+        "target_text",
+        "source",
+        "category",
+        "english_key",
+    )
     for entry in entries:
         missing = [field for field in required if not entry.get(field)]
         if missing:
@@ -480,6 +561,8 @@ def main() -> None:
 
     copy_target = RAW_OUT / "naer_food_science_nutrition.ods"
     shutil.copyfile(SOURCE, copy_target)
+    mainland_copy = RAW_OUT / "china_food_composition_matched.csv"
+    shutil.copyfile(MAINLAND_SOURCE, mainland_copy)
 
     write_json(OUT / "corpus.json", entries)
     write_json(
@@ -498,6 +581,9 @@ def main() -> None:
 
     csv_fields = [
         "id",
+        "region",
+        "region_label",
+        "source_record_id",
         "source_text",
         "target_text",
         "source",
@@ -513,6 +599,9 @@ def main() -> None:
         "year",
         "update_date",
         "source_url",
+        "english_key",
+        "food_category",
+        "matched_taiwan_ids",
         "qa_sample",
     ]
     with (OUT / "corpus.csv").open("w", encoding="utf-8-sig", newline="") as handle:
@@ -523,11 +612,23 @@ def main() -> None:
 
     category_counts = Counter(entry["category"] for entry in entries)
     orientation_counts = Counter(entry["orientation"] for entry in entries)
+    region_counts = Counter(entry["region"] for entry in entries)
+    mainland_manifest = json.loads(MAINLAND_MANIFEST.read_text(encoding="utf-8"))
+    mainland_entries = [entry for entry in entries if entry["region"] == "CN"]
+    matched_concepts = {
+        entry["english_key"]
+        for entry in entries
+        if any(
+            other["region"] == "CN" and other["english_key"] == entry["english_key"]
+            for other in entries
+        )
+    }
     manifest = {
-        "title": "Terminology in Translation: Food Science and Nutrition in English and Chinese",
-        "source": "National Academy for Educational Research (NAER), 樂詞網",
+        "title": "Terminology in Translation: Taiwan and Mainland China",
+        "source": "NAER 樂詞網 and China Food Composition Table bilingual food names",
         "source_dataset": "農學名詞-食品科學與營養學名詞",
         "source_file": copy_target.name,
+        "mainland_file": mainland_copy.name,
         "source_sha256": hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
         "source_url": "https://terms.naer.edu.tw/",
         "license": (
@@ -536,8 +637,21 @@ def main() -> None:
         ),
         "license_url": "https://terms.naer.edu.tw/mysite/about/2/",
         "collected": COLLECTED,
-        "generated": COLLECTED,
+        "mainland_collected": mainland_manifest["retrieved"],
+        "generated": GENERATED,
         "rows": len(entries),
+        "regions": dict(region_counts),
+        "comparison_concepts": len(matched_concepts),
+        "matched_mainland_rows": len(mainland_entries),
+        "matched_unique_english_terms": len(
+            {entry["english_key"] for entry in mainland_entries}
+        ),
+        "mainland_source": MAINLAND_MANIFEST.relative_to(ROOT).as_posix(),
+        "mainland_source_url": mainland_manifest["source_url"],
+        "mainland_permission": (
+            "Project owner confirmed permission on 2026-11-26 to publish the "
+            "matched bilingual food-name records. The full nutritional table is not included."
+        ),
         "raw_rows": len(raw_rows) - 1,
         "missing_cells": 0,
         "multi_equivalent": sum(entry["multi_equivalent"] for entry in entries),
@@ -561,6 +675,7 @@ def main() -> None:
                 OUT / "corpus.csv",
                 OUT / "manifest.json",
                 copy_target,
+                mainland_copy,
             ]
         ]
     )

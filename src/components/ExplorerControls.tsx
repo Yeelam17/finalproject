@@ -3,7 +3,9 @@ import type { Filters } from "../state";
 import type { CorpusEntry, Language } from "../types";
 import {
   CATEGORY_META,
+  COMPARISON_META,
   ORIENTATION_META,
+  REGION_META,
   categoryLabel,
   downloadText,
   formatNumber,
@@ -39,7 +41,9 @@ export function FilterBar({
     filters.category !== "all" ||
     filters.human !== "all" ||
     filters.equivalence !== "all" ||
-    filters.orientation !== "all";
+    filters.orientation !== "all" ||
+    filters.region !== "all" ||
+    filters.comparison !== "all";
 
   return (
     <section className="filter-panel" aria-label={copy.filters}>
@@ -110,6 +114,31 @@ export function FilterBar({
             <option value="mixed">{orientationLabel("mixed", language)}</option>
           </select>
         </label>
+        <label>
+          <span>{copy.filterRegion}</span>
+          <select
+            value={filters.region}
+            onChange={(event) => onFilter("region", event.target.value)}
+          >
+            <option value="all">{copy.all}</option>
+            <option value="TW">{REGION_META.TW[language === "en" ? "en" : "zh"]}</option>
+            <option value="CN">{REGION_META.CN[language === "en" ? "en" : "zh"]}</option>
+          </select>
+        </label>
+        <label>
+          <span>{copy.filterComparison}</span>
+          <select
+            value={filters.comparison}
+            onChange={(event) => onFilter("comparison", event.target.value)}
+          >
+            <option value="all">{copy.all}</option>
+            {Object.entries(COMPARISON_META).map(([id, meta]) => (
+              <option key={id} value={id}>
+                {meta[language === "en" ? "en" : "zh"]}
+              </option>
+            ))}
+          </select>
+        </label>
         <div className="result-count" aria-live="polite">
           <strong>{formatNumber(resultCount)}</strong>
           <span>
@@ -141,6 +170,8 @@ interface DataTableProps {
 const TABLE_COLUMNS = [
   ["source_text", "term"],
   ["target_primary", "primaryTarget"],
+  ["region", "filterRegion"],
+  ["comparison_status", "filterComparison"],
   ["category", "category"],
   ["orientation", "orientation"],
   ["multi_equivalent", "equivalence"],
@@ -229,6 +260,32 @@ export function DataTable({
                   <span className="table-id">#{entry.id}</span>
                 </td>
                 <td className="target-cell">{entry.target_primary}</td>
+                <td>
+                  <span
+                    className="region-chip"
+                    style={{
+                      "--region-color": REGION_META[entry.region].color,
+                    } as CSSProperties}
+                  >
+                    {REGION_META[entry.region][language === "en" ? "shortEn" : "shortZh"]}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className="comparison-chip"
+                    style={{
+                      "--comparison-color":
+                        COMPARISON_META[entry.comparison_status ?? "unpaired"]
+                          .color,
+                    } as CSSProperties}
+                  >
+                    {
+                      COMPARISON_META[entry.comparison_status ?? "unpaired"][
+                        language === "en" ? "shortEn" : "shortZh"
+                      ]
+                    }
+                  </span>
+                </td>
                 <td>
                   <span
                     className="category-chip"
@@ -339,6 +396,10 @@ export function TermDetail({
       )}
       <dl className="detail-grid">
         <div>
+          <dt>{copy.filterRegion}</dt>
+          <dd>{REGION_META[entry.region][language === "en" ? "en" : "zh"]}</dd>
+        </div>
+        <div>
           <dt>{copy.category}</dt>
           <dd>{categoryLabel(entry.category, language)}</dd>
         </div>
@@ -361,6 +422,31 @@ export function TermDetail({
           </dd>
         </div>
       </dl>
+      {entry.comparison_status &&
+        entry.comparison_status !== "unpaired" &&
+        entry.comparison_partners &&
+        entry.comparison_partners.length > 1 && (
+          <div className="regional-pair-panel">
+            <div>
+              <span>{copy.regionalPeers}</span>
+              <strong
+                style={{
+                  color: COMPARISON_META[entry.comparison_status].color,
+                }}
+              >
+                {COMPARISON_META[entry.comparison_status][
+                  language === "en" ? "en" : "zh"
+                ]}
+              </strong>
+            </div>
+            <ul>
+              {entry.comparison_partners.map((partner) => (
+                <li key={partner}>{partner}</li>
+              ))}
+            </ul>
+            <small>{copy.comparisonBasedOn}</small>
+          </div>
+        )}
       <div className="detail-field">
         <span>{language === "en" ? "Classification evidence" : "分類證據"}</span>
         <p>{entry.category_evidence}</p>

@@ -1,10 +1,13 @@
 import type {
   CategoryId,
+  ComparisonStatus,
   CorpusEntry,
   Language,
   OrientationId,
+  RegionId,
   UrlState,
 } from "./types";
+import { Converter } from "opencc-js/t2cn";
 
 export const CATEGORY_ORDER: CategoryId[] = [
   "borrowing",
@@ -82,6 +85,177 @@ export const ORIENTATION_META: Record<
   mixed: { en: "Mixed", zh: "混合", color: "#8a6a9c" },
 };
 
+export const REGION_META: Record<
+  RegionId,
+  { en: string; zh: string; shortEn: string; shortZh: string; color: string }
+> = {
+  TW: {
+    en: "Taiwan",
+    zh: "臺灣",
+    shortEn: "TW",
+    shortZh: "臺",
+    color: "#45645c",
+  },
+  CN: {
+    en: "Mainland China",
+    zh: "中國大陸",
+    shortEn: "CN",
+    shortZh: "陸",
+    color: "#aa5d36",
+  },
+};
+
+export const COMPARISON_META: Record<
+  ComparisonStatus,
+  { en: string; zh: string; shortEn: string; shortZh: string; color: string }
+> = {
+  same: {
+    en: "Same wording",
+    zh: "用詞相同",
+    shortEn: "Same",
+    shortZh: "相同",
+    color: "#3f6f61",
+  },
+  script_only: {
+    en: "Character variant only",
+    zh: "僅字形差異",
+    shortEn: "Script only",
+    shortZh: "字形",
+    color: "#809a54",
+  },
+  partial: {
+    en: "Partial overlap",
+    zh: "部分重疊",
+    shortEn: "Partial",
+    shortZh: "部分",
+    color: "#b47b37",
+  },
+  different: {
+    en: "Different terminology",
+    zh: "用詞不同",
+    shortEn: "Different",
+    shortZh: "不同",
+    color: "#9a3941",
+  },
+  unpaired: {
+    en: "No regional pair",
+    zh: "無跨地配對",
+    shortEn: "Unpaired",
+    shortZh: "未配對",
+    color: "#938b80",
+  },
+};
+
+const twToCn = Converter({ from: "tw", to: "cn" });
+
+const cleanHanText = (value: string): string =>
+  value
+    .normalize("NFKC")
+    .replace(/[（(][^）)]*[）)]/g, "")
+    .replace(/[\s，,、；;。·\-—_/]/g, "")
+    .trim();
+
+const termVariants = (value: string): string[] => {
+  const variants = [value];
+  const withoutQualifiers = value.replace(/[（(][^）)]*[）)]/g, "").trim();
+  if (withoutQualifiers && withoutQualifiers !== value) {
+    variants.push(withoutQualifiers);
+  }
+  for (const match of value.matchAll(/[（(]([^）)]*)[）)]/g)) {
+    variants.push(...match[1].split(/[；;、]/));
+  }
+  return variants.filter(Boolean);
+};
+
+const comparableTerms = (entry: CorpusEntry): string[] =>
+  [
+    ...entry.target_alternatives,
+    ...termVariants(entry.target_text),
+  ]
+    .map((term) => cleanHanText(twToCn(term)))
+    .filter(Boolean);
+
+const rawTerms = (entry: CorpusEntry): string[] =>
+  [...entry.target_alternatives, ...termVariants(entry.target_text)]
+    .map((term) => cleanHanText(term))
+    .filter(Boolean);
+
+const compareTermGroups = (
+  taiwanEntries: CorpusEntry[],
+  mainlandEntries: CorpusEntry[],
+): ComparisonStatus => {
+  const rawTaiwan = taiwanEntries.flatMap(rawTerms);
+  const rawMainland = mainlandEntries.flatMap(rawTerms);
+  if (rawTaiwan.some((term) => rawMainland.includes(term))) return "same";
+  const taiwan = taiwanEntries.flatMap(comparableTerms);
+  const mainland = mainlandEntries.flatMap(comparableTerms);
+  if (taiwan.some((term) => mainland.includes(term))) return "script_only";
+  if (
+    taiwan.some((left) =>
+      mainland.some(
+        (right) => left.includes(right) || right.includes(left),
+      ),
+    )
+  ) {
+    return "partial";
+  }
+  return "different";
+};
+
+export const annotateRegionalComparisons = (
+  entries: CorpusEntry[],
+): CorpusEntry[] => {
+  const groups = new Map<string, CorpusEntry[]>();
+  for (const entry of entries) {
+    const key = entry.english_key || entry.source_text.trim().toLowerCase();
+    const group = groups.get(key) ?? [];
+    group.push(entry);
+    groups.set(key, group);
+  }
+
+  const statusByKey = new Map<string, ComparisonStatus>();
+  const partnersByKey = new Map<string, string[]>();
+  for (const [key, group] of groups) {
+    const taiwan = group.filter((entry) => entry.region === "TW");
+    const mainland = group.filter((entry) => entry.region === "CN");
+    if (!taiwan.length || !mainland.length) continue;
+    statusByKey.set(key, compareTermGroups(taiwan, mainland));
+    partnersByKey.set(key, [
+      ...taiwan.map((entry) => `臺灣：${entry.target_text}`),
+      ...mainland.map((entry) => `中國大陸：${entry.target_text}`),
+    ]);
+  }
+
+  return entries.map((entry) => {
+    const key = entry.english_key || entry.source_text.trim().toLowerCase();
+    return {
+      ...entry,
+      comparison_status: statusByKey.get(key) ?? "unpaired",
+      comparison_partners: partnersByKey.get(key) ?? [],
+    };
+  });
+};
+
+export const comparisonSummary = (
+  entries: CorpusEntry[],
+): { counts: Record<ComparisonStatus, number>; total: number } => {
+  const groups = new Map<string, ComparisonStatus>();
+  for (const entry of entries) {
+    if (!entry.english_key || !entry.comparison_status) continue;
+    if (entry.comparison_status === "unpaired") continue;
+    groups.set(entry.english_key, entry.comparison_status);
+  }
+  const counts: Record<ComparisonStatus, number> = {
+    same: 0,
+    script_only: 0,
+    partial: 0,
+    different: 0,
+    unpaired: 0,
+  };
+  for (const status of groups.values()) counts[status] += 1;
+  return { counts, total: groups.size };
+};
+
 export const categoryLabel = (
   category: CategoryId,
   language: Language,
@@ -141,6 +315,8 @@ export const buildHash = (
 export const makeCsv = (entries: CorpusEntry[]): string => {
   const columns = [
     "id",
+    "region",
+    "region_label",
     "source_text",
     "target_text",
     "source",
@@ -156,6 +332,8 @@ export const makeCsv = (entries: CorpusEntry[]): string => {
     "year",
     "update_date",
     "source_url",
+    "english_key",
+    "comparison_status",
   ];
   const escape = (value: unknown): string => {
     const text = String(value ?? "");

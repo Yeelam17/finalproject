@@ -107,6 +107,13 @@ export function Layout({
           >
             GitHub
           </a>
+          <a
+            href="https://github.com/Sanotsu/china-food-composition-data"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {language === "en" ? "China food-name source" : "中國食物名稱來源"}
+          </a>
         </nav>
       </footer>
     </div>

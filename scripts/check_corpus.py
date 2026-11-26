@@ -38,21 +38,40 @@ def main() -> None:
         "Normalized duplicate count does not reconcile",
     )
 
-    required = ("id", "source_text", "target_text", "source", "category")
+    required = (
+        "id",
+        "region",
+        "source_text",
+        "target_text",
+        "source",
+        "category",
+        "english_key",
+    )
     for entry in entries:
         for field in required:
             require(bool(entry.get(field)), f"Missing {field} in {entry['id']}")
         require(entry["category"] in CATEGORIES, f"Unknown category in {entry['id']}")
         require(entry["unit"] == "term", f"Unexpected unit in {entry['id']}")
-        require(entry["source_url"].startswith("https://terms.naer.edu.tw/"), "Bad source URL")
+        expected_host = (
+            "https://terms.naer.edu.tw/"
+            if entry["region"] == "TW"
+            else "https://github.com/Sanotsu/china-food-composition-data"
+        )
+        require(entry["source_url"].startswith(expected_host), "Bad source URL")
         require(
             entry["multi_equivalent"] == (len(entry["target_alternatives"]) > 1),
             f"Equivalence flag mismatch in {entry['id']}",
         )
 
     counts = Counter(entry["category"] for entry in entries)
+    regions = Counter(entry["region"] for entry in entries)
     require(all(counts[category] > 0 for category in CATEGORIES), "Empty category")
     require(dict(counts) == manifest["categories"], "Category totals do not reconcile")
+    require(dict(regions) == manifest["regions"], "Region totals do not reconcile")
+    require(
+        regions["CN"] == manifest["matched_mainland_rows"],
+        "Mainland row count does not reconcile",
+    )
     require(
         sum(entry["qa_sample"] for entry in entries) == manifest["qa_size"] == 50,
         "QA sample is not exactly 50",
@@ -76,6 +95,7 @@ def main() -> None:
 
     print(
         f"Validated {len(entries):,} entries with unique IDs, "
+        f"{regions['TW']:,} Taiwan and {regions['CN']:,} matched mainland records, "
         f"{manifest['multi_equivalent']:,} multi-equivalent records, "
         f"{manifest['qa_size']} QA records, and matching CSV/ODS artifacts."
     )

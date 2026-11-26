@@ -1,9 +1,18 @@
 import type { CSSProperties } from "react";
-import type { CategoryId, Language, Manifest, UrlState } from "../types";
+import type {
+  CategoryId,
+  ComparisonStatus,
+  CorpusEntry,
+  Language,
+  Manifest,
+  UrlState,
+} from "../types";
 import { CODEBOOK } from "../content";
 import {
   CATEGORY_META,
   CATEGORY_ORDER,
+  COMPARISON_META,
+  comparisonSummary,
   formatNumber,
   orientationLabel,
 } from "../lib";
@@ -18,15 +27,18 @@ const EXAMPLE_TERM: Record<CategoryId, string> = {
 
 export function CodebookPage({
   manifest,
+  entries,
   language,
   params,
   navigate,
 }: {
   manifest: Manifest;
+  entries: CorpusEntry[];
   language: Language;
   params: URLSearchParams;
   navigate: (route: UrlState["route"], params: URLSearchParams) => void;
 }) {
+  const comparison = comparisonSummary(entries);
   const openTerm = (term: string) => {
     const next = new URLSearchParams();
     next.set("q", term);
@@ -193,6 +205,53 @@ export function CodebookPage({
           );
         })}
       </div>
+
+      <section className="comparison-codebook">
+        <span className="eyebrow">
+          {language === "en" ? "Regional comparison" : "跨地比較"}
+        </span>
+        <h2>
+          {language === "en"
+            ? "Separate different terms from different characters."
+            : "把用詞差異與字形差異分開。"}
+        </h2>
+        <p>
+          {language === "en"
+            ? "Before comparing wording, Taiwan's Traditional Chinese is converted to Simplified Chinese. The four statuses below are not translation-strategy categories; they describe whether the matched regional forms converge."
+            : "比較用詞前，先把臺灣繁體中文轉為簡體中文。以下四種狀態並非翻譯策略類別，而是描述兩地配對形式是否趨同。"}
+        </p>
+        <div className="comparison-codebook-grid">
+          {(
+            ["same", "script_only", "partial", "different"] as ComparisonStatus[]
+          ).map((status) => (
+            <article
+              key={status}
+              style={{ "--comparison-color": COMPARISON_META[status].color } as CSSProperties}
+            >
+              <span>{COMPARISON_META[status][language === "en" ? "en" : "zh"]}</span>
+              <strong>{comparison.counts[status]}</strong>
+              <p>
+                {status === "same" &&
+                  (language === "en"
+                    ? "The matched Chinese strings are identical before conversion."
+                    : "配對中文在轉換前已完全相同。")}
+                {status === "script_only" &&
+                  (language === "en"
+                    ? "They become identical only after Traditional-to-Simplified conversion."
+                    : "只在繁體轉簡體後才完全相同。")}
+                {status === "partial" &&
+                  (language === "en"
+                    ? "One normalized term contains the other, so part of the wording overlaps."
+                    : "一個正規化詞包含另一個，因此只有部分用詞重疊。")}
+                {status === "different" &&
+                  (language === "en"
+                    ? "Neither equality nor containment holds, indicating a substantive lexical difference."
+                    : "既不完全相同，也沒有包含關係，顯示實質詞彙差異。")}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="codebook-log">
         <span className="eyebrow">

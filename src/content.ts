@@ -9,22 +9,31 @@ export const UI = {
       aiUse: "AI use",
     },
     language: "繁體中文",
-    eyebrow: "NAER bilingual terminology corpus",
+    eyebrow: "Taiwan and Mainland China bilingual food corpus",
     title: "Terminology in Translation",
     subtitle:
-      "Food science and nutrition in English and Chinese, explored through translation strategy, equivalence, and official terminology.",
-    searchLabel: "Search English, Chinese, or NAER term ID",
-    searchPlaceholder: "Try: obesity, 營養, or 21409451",
+      "Compare Taiwan and Mainland Chinese food terminology through official wording, translation strategy, and regional difference.",
+    searchLabel: "Search English, Chinese, or source record ID",
+    searchPlaceholder: "Try: apple, 蘋果, or 091101x",
     filters: "Filters",
     filterCategory: "Translation strategy",
     filterChecked: "Human checked",
     filterEquivalence: "Chinese equivalents",
     filterOrientation: "Orientation",
+    filterRegion: "Region",
+    filterComparison: "Regional difference",
     all: "All",
     yes: "Yes",
     no: "No",
     single: "Single",
     multiple: "Multiple",
+    taiwan: "Taiwan",
+    mainland: "Mainland China",
+    sameWording: "Same wording",
+    scriptOnly: "Character variant only",
+    partialOverlap: "Partial overlap",
+    differentTerms: "Different terminology",
+    unpaired: "No regional pair",
     clear: "Clear filters",
     results: "matching terms",
     resetSearch: "Reset view",
@@ -33,15 +42,15 @@ export const UI = {
     checked: "checked",
     terms: "terms",
     sourceAttribution:
-      "Source: National Academy for Educational Research (NAER), 樂詞網. Reused with attribution under NAER's open-data declaration.",
+      "Sources: NAER 樂詞網 and the China Food Composition Table bilingual food-name dataset. The full nutritional table is not republished.",
     footerNote:
-      "A Translation Technology in the Age of AI final project. Corpus collected 24 November 2026.",
+      "A Translation Technology in the Age of AI final project. Regional comparison added 26 November 2026.",
     readReport: "Read the learning report",
     openCodebook: "Inspect the codebook",
     chartEmpty: "No terms match the current filters.",
     selectedTerm: "Selected term",
     clearSelection: "Clear selection",
-    openSource: "View NAER search",
+    openSource: "Open cited source",
     category: "Category",
     confidence: "AI confidence",
     alternatives: "All Chinese equivalents",
@@ -63,13 +72,14 @@ export const UI = {
     downloadCorpus: "Download clean CSV",
     downloadJson: "Download JSON",
     downloadSource: "Download original ODS",
+    downloadMainland: "Download matched mainland names",
     totalRows: "Total terms",
     multiRows: "Multiple equivalents",
     checkedRows: "Human checked",
     strategies: "Strategies",
     qaTitle: "Review the 50-term sample",
     qaIntro:
-      "Check each pair against the NAER source and the codebook. Confirm the AI classification or mark it for correction. Decisions are stored in this browser and can be exported as a JSON audit file.",
+      "Check each pair against its cited source and the codebook. Confirm the AI classification or mark it for correction. Decisions are stored in this browser and can be exported as a JSON audit file.",
     qaProgress: "reviewed",
     confirm: "Confirm classification",
     correction: "Needs correction",
@@ -81,6 +91,9 @@ export const UI = {
     qaComplete:
       "All 50 sample entries have been reviewed. Export the JSON so the classifications can be updated in the published corpus.",
     reviewStatus: "Review status",
+    pairedTerms: "Side-by-side wording",
+    regionalPeers: "Matched regional wording",
+    comparisonBasedOn: "Comparison uses Traditional-to-Simplified normalization",
   },
   zh: {
     nav: {
@@ -90,22 +103,31 @@ export const UI = {
       aiUse: "AI 使用聲明",
     },
     language: "English",
-    eyebrow: "國家教育研究院雙語術語語料",
+    eyebrow: "臺灣與中國大陸食品雙語語料",
     title: "翻譯中的術語",
     subtitle:
-      "以翻譯策略、對等關係與官方術語為線索，探索食品科學與營養學的英中雙語詞彙。",
-    searchLabel: "搜尋英文、中文或樂詞網術語編號",
-    searchPlaceholder: "例如：obesity、營養或 21409451",
+      "透過官方用詞、翻譯策略與跨地差異，比較臺灣與中國大陸的食品術語。",
+    searchLabel: "搜尋英文、中文或來源編號",
+    searchPlaceholder: "例如：apple、蘋果或 091101x",
     filters: "篩選",
     filterCategory: "翻譯策略",
     filterChecked: "人工校對",
     filterEquivalence: "中文對等詞",
     filterOrientation: "翻譯導向",
+    filterRegion: "地區",
+    filterComparison: "跨地差異",
     all: "全部",
     yes: "是",
     no: "否",
     single: "單一",
     multiple: "多重",
+    taiwan: "臺灣",
+    mainland: "中國大陸",
+    sameWording: "用詞相同",
+    scriptOnly: "僅字形差異",
+    partialOverlap: "部分重疊",
+    differentTerms: "用詞不同",
+    unpaired: "無跨地配對",
     clear: "清除篩選",
     results: "筆符合詞條",
     resetSearch: "重設檢視",
@@ -114,14 +136,14 @@ export const UI = {
     checked: "已校對",
     terms: "詞條",
     sourceAttribution:
-      "資料來源：國家教育研究院樂詞網。依樂詞網政府網站資料開放宣告，於標明出處下重製與改作。",
-    footerNote: "《人工智慧時代的翻譯科技》期末專題。語料擷取日期：2026 年 11 月 24 日。",
+      "資料來源：國家教育研究院樂詞網及《中國食物成分表》中英文食物名稱資料集。網站不重新發布完整營養成分表。",
+    footerNote: "《人工智慧時代的翻譯科技》期末專題。跨地比較於 2026 年 11 月 26 日加入。",
     readReport: "閱讀學習報告",
     openCodebook: "查看分類規準",
     chartEmpty: "目前篩選條件沒有符合的詞條。",
     selectedTerm: "已選詞條",
     clearSelection: "清除選取",
-    openSource: "查看樂詞網搜尋",
+    openSource: "開啟來源",
     category: "分類",
     confidence: "AI 信心值",
     alternatives: "所有中文對等詞",
@@ -143,13 +165,14 @@ export const UI = {
     downloadCorpus: "下載整理後 CSV",
     downloadJson: "下載 JSON",
     downloadSource: "下載原始 ODS",
+    downloadMainland: "下載中國大陸配對名稱",
     totalRows: "詞條總數",
     multiRows: "多重中文對等詞",
     checkedRows: "已人工校對",
     strategies: "策略類別",
     qaTitle: "校對 50 筆隨機樣本",
     qaIntro:
-      "請對照樂詞網來源與分類規準，逐筆確認 AI 分類，或標記需要修正。決定會儲存在此瀏覽器，並可匯出為 JSON 校對紀錄。",
+      "請對照詞條來源與分類規準，逐筆確認 AI 分類，或標記需要修正。決定會儲存在此瀏覽器，並可匯出為 JSON 校對紀錄。",
     qaProgress: "已檢視",
     confirm: "確認分類",
     correction: "需要修正",
@@ -160,6 +183,9 @@ export const UI = {
     qaEmpty: "校對樣本尚未載入。",
     qaComplete: "50 筆樣本已全部檢視。請匯出 JSON，以便更新正式發布語料中的分類。",
     reviewStatus: "校對狀態",
+    pairedTerms: "跨地並列用詞",
+    regionalPeers: "跨地配對用詞",
+    comparisonBasedOn: "比較先將臺灣繁體詞轉為簡體後再判斷用詞差異",
   },
 } as const;
 
@@ -299,63 +325,63 @@ export const CODEBOOK: CodebookEntry[] = [
 export const REPORT = {
   en: {
     eyebrow: "Learning report",
-    title: "How official terminology carries a scientific field across languages",
+    title: "How two Chinese-language food communities name the same scientific world",
     standfirst:
-      "This project turns a bilingual glossary into an argument about translation strategy. It asks whether Taiwan's official food-science and nutrition terms lean toward the source text, toward the Chinese reader, or toward a mixture of both.",
+      "This project compares Taiwan's official food-science terminology with matched bilingual food names from Mainland China. It asks which differences are only changes of Chinese script, which reuse part of the same term, and which reveal genuinely different terminology.",
     sections: [
       {
         title: "Origin",
         paragraphs: [
-          "I chose this corpus because an official terminology list creates a useful tension for translation analysis. A glossary looks neutral: it presents English and Chinese side by side as if equivalence were already settled. Yet each pair is the result of a choice. Some Chinese terms reproduce the structure of the English; others sound like ordinary Chinese, retain a chemical symbol, or add an explanation. Looking at 5,691 pairs makes those choices visible at a scale that a handful of examples cannot show.",
+          "I began with Taiwan's NAER terminology because an official glossary creates a useful tension for translation analysis. A list looks neutral when English and Chinese sit side by side as if equivalence were already settled, yet every pair is the result of a choice. To make those choices comparative rather than merely descriptive, I added Mainland Chinese bilingual food names wherever an exact English name also appeared in NAER. The result is a corpus of 5,792 records: the full Taiwan inventory plus 101 matched Mainland rows covering 91 shared English concepts.",
           "The topic also connects food science to public language. Nutrition terms influence labels, clinical communication, product information, and science education. When an official database offers several Chinese equivalents for one English term, the apparent stability of terminology becomes an analytical question rather than a background fact.",
         ],
       },
       {
         title: "Background",
         paragraphs: [
-          "The source is the National Academy for Educational Research's 樂詞網, specifically the dataset 農學名詞－食品科學與營養學名詞. The supplied ODS contains an ID, English term, Chinese term, and update date for every row. It has 5,691 records with no missing cells in those four fields. Record IDs are unique, while 965 records present more than one Chinese equivalent separated by a semicolon. One pair becomes identical only after whitespace normalization; both source IDs remain in the corpus and the duplicate is disclosed in the data. The corpus therefore supports two related questions: how a term is translated, and whether official equivalence is singular or plural.",
+          "The Taiwan source is the National Academy for Educational Research's 樂詞網, dataset 農學名詞－食品科學與營養學名詞. Its ODS contains 5,691 records with no missing cells in the ID, English term, Chinese term, and update-date fields. The Mainland source is the China Food Composition Table bilingual food-name dataset maintained in a GitHub repository. It supplies 101 food-name rows whose normalized English names exactly match a Taiwan record. English matching is intentionally strict: the project does not guess that two different food names refer to the same biological or commercial entity.",
           "Translation-studies work on direct and oblique procedures provides the starting vocabulary for the analysis. Vinay and Darbelnet describe borrowing, calque, literal translation, transposition, modulation, equivalence, and adaptation. Their categories are not a mechanical recipe, especially when source and target do not share a script. They remain useful as a comparative vocabulary. Explicitation research adds a further concern: translations may make implicit information explicit. To avoid forcing every classical procedure into a separate label, the codebook combines closely related procedures into five analysable strategies.",
-          "Choosing an official institutional source also sets a boundary for the argument. These are not translations produced by one individual for one audience. They are records shaped by committee review, domain convention, and long-term terminology standardization. The project can describe the resulting patterns, but it cannot reconstruct the full deliberation behind each Chinese term. Attribution to NAER is therefore both a legal requirement of the open-data declaration and an analytical condition: the website reports on institutional terminology, not on a freely authored parallel text.",
+          "Choosing institutional sources sets a boundary for the argument. These are not translations produced by one individual for one audience. They reflect committee review, textbook convention, food regulation, and long-term terminology standardization. The project can describe the resulting patterns, but it cannot reconstruct the full deliberation behind each Chinese term. Attribution is therefore both a legal and an analytical condition: the website reports on two institutional registers, not on freely authored parallel texts.",
         ],
       },
       {
         title: "Gap",
         paragraphs: [
-          "NAER makes the vocabulary searchable and downloadable, but its role is to document terminology rather than interpret translation strategy. A user can retrieve a term and see its equivalents, but cannot ask how the entire official inventory is distributed across rendering choices, how often Chinese supplies several equivalents, or whether those features travel together. Existing bibliographic or PDF formats also make cross-cutting exploration difficult.",
+          "Each source is useful on its own, but neither presents the two regions as a linked comparison. A user can retrieve an individual Taiwan term or a Mainland food-name record, yet cannot easily ask whether the same English concept remains identical after script normalization, shares a lexical component, or uses a substantially different Chinese term. Existing spreadsheet, PDF, and screenshot formats also make cross-cutting exploration difficult.",
         ],
       },
       {
         title: "Questions",
         paragraphs: [
-          "This project addresses that gap with a static, bilingual interface that links search, filters, four visualizations, and a data grid. The central question is whether official food-science terms favour source-oriented procedures such as borrowing and calque, or target-oriented procedures such as semantic equivalence and explicitation. A second question asks whether the same pattern holds for terms with multiple Chinese equivalents. The project does not treat the AI labels as a gold standard. It asks what becomes visible when a large official glossary is coded consistently and then checked through transparent limitations.",
+          "This project addresses that gap with a static, bilingual interface that links search, filters, four visualizations, and a data grid. The central question is how the same English food concept is rendered in Taiwan and Mainland China, and how far those renderings differ after orthographic normalization. A second question asks whether regional differences travel with translation strategy or with single- versus multiple-equivalent records. The project does not treat the AI labels as a gold standard; it asks what becomes visible when two institutional word lists are aligned and then checked through transparent limitations.",
           "The interface is also intended as a repeatable argument, not only a display. A shared URL preserves the search term, active filters, sorting, and selected record, so an instructor, classmate, or future employer can open the exact view being discussed. Clicking a category in one chart applies it to the others. This matters because translation patterns are relational: the meaning of a category changes when the reader can see its internal equivalence profile and the individual terms that produce it.",
         ],
       },
       {
         title: "Method",
         paragraphs: [
-          "I preserved the original ODS and generated a clean CSV and JSON from it. The cleaning process removed presentation markup and surrounding whitespace but did not invent or retranslate any Chinese term. Each source row remains one entry. For records with several Chinese equivalents, the first rendering is used as the principal target for classification, while every alternative remains visible in the search and detail view. This decision keeps the coding unit aligned with NAER's term record and avoids turning one official ID into several unequal fragments.",
+          "I preserved both source descriptions and generated a clean combined CSV and JSON. Cleaning removed presentation markup and surrounding whitespace but did not invent or retranslate any Chinese term. Each source row remains one entry, with a region label and source identifier. Taiwan's first Chinese rendering is used as the principal target for classification, while every alternative remains searchable. Mainland names are added only after an exact normalized English match, which prevents unverified semantic alignment.",
           "The codebook was drafted before the full coding pass and then tested on a small set of contrasting entries. It uses five categories: borrowing or transliteration; calque or literal translation; semantic equivalent or modulation; explicitation; and hybrid rendering. The first four describe a dominant procedure; hybrid is reserved for visible combinations such as a retained acronym plus a Chinese head. Source-oriented labels combine borrowing and calque. Target-oriented labels combine semantic equivalence and explicitation. Mixed orientation contains the hybrid category.",
-          "Codex assisted with classification and used deterministic checks to make the process reproducible. Those checks look for retained source-script material, acronyms, explicit explanations, compositional source syntax, technical suffixes, and multi-equivalence. Each record carries a confidence value and an evidence note. This rule-assisted approach is consistent, but it cannot understand every scientific sense. In particular, a proper name may be transliterated, adapted semantically, or supplied with a classifier depending on domain convention. I therefore treat the full coding pass as provisional except for entries that pass human review.",
-          "The public workflow includes a fixed sample of 50 records selected with a random seed from all 5,691 records. The seed and sample membership are recorded in the downloadable data. A reviewer can compare each sampled pair with its NAER search result, confirm the current strategy, or flag a correction. The report distinguishes AI classification from human verification rather than using a single unexplained quality claim.",
+          "Regional comparison adds a separate decision layer. Taiwan's Traditional Chinese alternatives are converted to Simplified Chinese, stripped of punctuation, and compared with the Mainland name. Identical wording is marked as the same; equality only after conversion is treated as a script variant; containment counts as partial overlap; all remaining cases are different terminology. This prevents the website from reporting traditional-versus-simplified orthography as if it were a lexical disagreement.",
+          "The public workflow includes a fixed sample of 50 records selected with a random seed from all 5,792 records. The seed and sample membership are recorded in the downloadable data. A reviewer can compare each sampled pair with its cited source, confirm the current strategy, or flag a correction. The report distinguishes AI classification from human verification rather than using a single unexplained quality claim.",
           "The data model keeps those judgments inspectable. Required fields identify the English source, Chinese target, NAER record, strategy, and human-check status. Optional fields identify the principal rendering, alternative equivalents, orientation, confidence, and classification evidence. The raw ODS, clean CSV, and JSON are all downloadable. This separation lets a reader challenge a category without losing the original record and lets the site be rebuilt after corrections.",
         ],
       },
       {
         title: "Analysis",
         paragraphs: [
-          "The Sankey diagram shows the relationship between translation orientation, the five strategies, and equivalence status. Its flow view makes the dominant route through the corpus visible without reducing the result to a single percentage. The treemap provides the same hierarchy as nested areas, allowing a reader to move from source-oriented or target-oriented space into individual strategies and then see how much of each strategy is single- or multi-equivalent. Clicking either view applies the corresponding category or equivalence filter to every other component.",
-          "The scatter plot compares English character length with the length of the principal Chinese rendering. This chart does not treat length as a measure of translation quality. It helps identify whether a strategy tends to produce compact labels or longer descriptive forms, and it exposes outliers for closer reading. Hovering over a point reveals the pair; clicking a point selects the record and exposes its source link and alternatives. The interface also supports colouring points by strategy or orientation, so the same distribution can answer two related questions.",
+          "The Sankey diagram shows the relationship between region, the five strategies, and equivalence status. Its flow view makes the dominant route through each regional register visible without reducing the result to a single percentage. The treemap begins with region by default, then lets the reader switch to orientation or equivalence grouping. Clicking either view applies the corresponding region, category, or equivalence filter to every other component.",
+          "The scatter plot compares English character length with the length of the principal Chinese rendering and colours records by region by default. This chart does not treat length as a measure of quality. It helps identify whether one regional register tends toward compact or descriptive labels and exposes outliers for closer reading. Clicking a point selects the record and displays the same-concept wording from the other region. The table is further filterable by region and by the four regional-difference categories.",
           "The interactive table is the evidential anchor. It shows the required source, category, and human-check status alongside the principal rendering, all alternatives, confidence, and evidence. Sorting and filtering update the table and the charts together. The downloadable CSV contains the current filtered set, while the full cleaned corpus and raw ODS remain available. The numbers in every view are computed from the same in-browser records, avoiding the common problem of a chart that looks plausible but disagrees with its table.",
-          "The overall result is a corpus dominated by target-oriented semantic equivalents, with a substantial source-oriented calque group and much smaller explicitation, borrowing, and hybrid groups. This should be read as a descriptive profile of the current coding scheme, not as a universal fact about Chinese scientific translation. The more interesting finding is structural: many official labels look compact and singular, but 965 entries preserve multiple Chinese options. That variation is easy to miss when a glossary is read row by row and much clearer when equivalence status is connected to strategy.",
+          "The matched subset shows that regional difference is not one phenomenon. Most pairs share at least part of their terminology, while a smaller group uses visibly different words. Some apparent differences disappear once Traditional Chinese is normalized to Simplified Chinese. This result supports a measured conclusion: Taiwan and Mainland Chinese food naming overlap considerably, but shared reference to the same food or nutrient does not guarantee shared terminology.",
           "The equivalence split adds a useful qualification. Among terms with a single Chinese equivalent, about 49.8% are coded as semantic equivalents and 45.5% as calque or literal renderings. Among multi-equivalent terms, the semantic share rises to about 65.0% while the calque share falls to 31.3%. That pattern suggests that records with several Chinese options are more often organized around lexical alternatives than around visibly parallel source structures. It does not prove that equivalence causes a strategy; it simply shows which features travel together in this dataset and gives the next reviewer a concrete hypothesis to test.",
         ],
       },
       {
         title: "Conclusion",
         paragraphs: [
-          "The project achieves three things. First, it converts a downloadable ODS into a traceable bilingual corpus with explicit fields and reproducible files. Second, it gives the terminology a translation-studies interpretation through a five-category codebook rather than an unclassified list. Third, it turns that interpretation into a usable public interface with linked search, filters, visualizations, and source lookup.",
-          "The conclusion is deliberately qualified. Official terminology shows both source-shaped and reader-oriented solutions, and multiple Chinese equivalents complicate any claim that a term has one settled translation. The website makes that complexity easier to inspect, compare, and discuss.",
+          "The project achieves three things. First, it converts two traceable bilingual sources into one regional corpus with explicit fields and reproducible files. Second, it separates script variation from lexical difference while retaining a five-category translation codebook. Third, it turns those distinctions into a usable public interface with linked search, region filters, visualizations, side-by-side wording, and source lookup.",
+          "The conclusion is deliberately qualified. The comparison covers only 91 English concepts with exact-name matches, so it is a focused case study rather than a complete map of Mainland food terminology. Within that matched set, regional terminology is often related but not always identical. The website makes those agreements, partial overlaps, and differences easier to inspect and discuss.",
         ],
       },
       {
@@ -370,63 +396,63 @@ export const REPORT = {
   },
   zh: {
     eyebrow: "學習報告",
-    title: "官方術語如何把一個科學領域帶進另一種語言",
+    title: "兩個中文食品社群如何命名同一個科學世界",
     standfirst:
-      "本專題把一份雙語詞表轉化為關於翻譯策略的論證，追問臺灣食品科學與營養學官方術語較偏向源語、目標語讀者，或兩者混合。",
+      "本專題比較臺灣食品科學官方術語與中國大陸配對食物名稱，追問哪些差異只是中文字形、哪些共用部分詞語，哪些則真正使用不同的術語。",
     sections: [
       {
         title: "緣起",
         paragraphs: [
-          "我選擇這份語料，是因為官方術語表能凸顯翻譯分析中的一種張力。詞表看似中立，彷彿英文與中文並列時，對等關係早已固定；但每一組詞其實都是選擇的結果。有些中文詞重現英文結構，有些讀起來像自然中文，有些保留化學符號，還有些加入說明。5,691 組詞使這些選擇得以在較大尺度上呈現，遠超少量例子所能展示的範圍。",
+          "我一開始選用臺灣樂詞網，因為官方詞表能凸顯翻譯分析中的張力。英文與中文並列時，詞表看似中立，彷彿對等關係早已固定；但每一組詞其實都是選擇的結果。為了讓這些選擇具有比較性，我又加入中國大陸中英文食物名稱中、能與樂詞網英文名稱精確配對的資料。最終語料共有 5,792 筆：完整的臺灣詞表，加上 101 筆中國大陸配對紀錄，涵蓋 91 個共同英文概念。",
           "這個題目也把食品科學與公共語言連結起來。營養術語影響食品標示、臨床溝通、產品資訊與科學教育。當官方資料庫為同一個英文術語提供多個中文對等詞時，術語表表面上的穩定性本身便成為值得分析的現象。",
         ],
       },
       {
         title: "背景",
         paragraphs: [
-          "資料來源為國家教育研究院樂詞網的「農學名詞－食品科學與營養學名詞」資料集。提供的 ODS 每一列包含編號、英文詞彙、中文詞彙與更新日期，共 5,691 筆，四個欄位皆無缺漏。詞條編號均不重複；另有 965 筆以分號列出一個以上的中文對等詞。有一組詞條只在空白正規化後變得相同，因此兩個原始編號均保留，並在資料中標示。這使語料能同時回答兩個相關問題：詞條如何被翻譯，以及官方對等關係是單一還是多重。",
+          "臺灣資料來源為國家教育研究院樂詞網的「農學名詞－食品科學與營養學名詞」資料集，共 5,691 筆，編號、英文詞彙、中文詞彙與更新日期皆無缺漏。中國大陸資料為 GitHub 上的《中國食物成分表》中英文食物名稱資料集，其中 101 筆的正規化英文名稱可與臺灣詞條精確配對。英文配對採取嚴格標準，不自行推測兩個不同食物名稱是否指同一生物或商品。",
           "翻譯研究中的直接與間接程序提供分析的起點。Vinay 與 Darbelnet 區分借譯、仿譯、直譯、詞性轉換、模組、對等與改編。這些類別並非能機械套用的公式，尤其當源語與目標語使用不同文字系統時更是如此；但它們仍有助於建立比較詞彙。顯化研究進一步提醒我們，譯文可能把原本隱含的資訊說明出來。為避免把每個古典程序都拆成獨立標籤，分類規準把相近程序整合為五種可分析的策略。",
-          "選擇官方機構語料也界定了論證的邊界。這些不是由單一譯者為單一讀者產生的譯文，而是經委員會審議、領域慣例與長期術語標準化共同形塑的紀錄。本專題可以描述最後呈現的模式，卻無法重建每個中文詞背後的完整商議過程。因此，標明 NAER 出處既是資料開放宣告的要求，也是分析前提：網站討論的是機構術語，而不是自由創作的平行文本。",
+          "選擇機構語料也界定了論證的邊界。這些不是由單一譯者為單一讀者產生的譯文，而是經委員會審議、教材慣例、食品法規與長期術語標準化共同形塑的紀錄。本專題可以描述最後呈現的模式，卻無法重建每個中文詞背後的完整商議過程。標明出處因此既是法律要求，也是分析前提：網站比較的是兩種機構語域，而不是自由創作的平行文本。",
         ],
       },
       {
         title: "研究缺口",
         paragraphs: [
-          "樂詞網讓使用者搜尋與下載詞彙，但其主要功能是記錄術語，而非解釋翻譯策略。使用者可以查到一個詞與其中文對等詞，卻不容易追問：整體官方詞庫如何分布於不同譯法？中文出現多重對等詞的頻率如何？這些特徵是否彼此相關？既有書目或 PDF 形式也使跨欄位的探索變得困難。",
+          "兩個來源各自都有用，卻沒有把兩地呈現為可連動的比較。使用者可以查到單一臺灣詞條或中國大陸食物名稱，卻不容易追問：同一個英文概念在字形正規化後是否仍然相同、是否共用部分詞語，或使用實質不同的中文名稱。既有試算表、PDF 與截圖形式也使跨欄位探索變得困難。",
         ],
       },
       {
         title: "研究問題",
         paragraphs: [
-          "本專題以靜態雙語介面回應這個缺口，把搜尋、篩選、四種視覺化與資料表串連起來。核心問題是：食品科學官方術語較偏向借譯、仿譯等源語導向程序，或語意對等、顯化等目標語導向程序？第二個問題是：多重中文對等詞是否呈現相同模式？本專題不把 AI 分類視為絕對答案，而是檢視當大型官方詞表被一致編碼後，什麼樣的結構會變得可見。",
+          "本專題以靜態雙語介面回應這個缺口，把搜尋、篩選、視覺化與資料表串連起來。核心問題是：同一個英文食品概念在臺灣與中國大陸如何呈現？在字形正規化後，兩地譯法相差多遠？第二個問題是：這些跨地差異是否與翻譯策略或單一／多重對等詞相關？本專題不把 AI 分類視為絕對答案，而是檢視兩份機構詞表被嚴格配對後，什麼樣的結構會變得可見。",
           "這個介面也不只是展示，而是一項可重複檢視的論證。分享 URL 會保留搜尋詞、篩選、排序與所選詞條，教師、同學或未來雇主能直接開啟正在討論的視圖。點選其中一張圖的分類，也會套用到其他圖表。翻譯模式具有關係性：當讀者能同時看見類別內部的對等分布，以及產生這些數字的個別詞條時，類別的意義才比較清楚。",
         ],
       },
       {
         title: "方法",
         paragraphs: [
-          "我保留原始 ODS，並由它產生整理後的 CSV 與 JSON。清理過程移除呈現用標記與前後空白，但不自行發明或重譯任何中文詞。每個原始列仍是一筆詞條。若一筆詞條包含多個中文對等詞，第一個譯法作為主要目標進行分類，其餘對等詞仍會出現在搜尋與詳細資料中。如此可讓編碼單位與樂詞網的詞條紀錄保持一致，避免把一個官方編號拆成幾個不平等的片段。",
+          "我保留兩個來源的描述，並產生合併後的 CSV 與 JSON。清理過程移除呈現標記與前後空白，但不自行發明或重譯中文詞。每個來源列仍是一筆詞條，並附有地區標籤與來源編號。臺灣詞條以第一個中文譯法作為分類目標，其餘對等詞仍可搜尋；中國大陸詞條只有在英文名稱正規化後完全相符時才加入，以免產生未經查證的語意配對。",
           "分類規準在完整編碼前建立，並先以一小組對照詞條測試。五類分別是借譯或音譯；仿譯或直譯；語意對等或轉換；顯化；混用譯法。前四類描述主要程序；混用只保留給明顯結合兩種程序的譯法，例如保留縮寫再加入中文中心詞。源語導向由借譯與仿譯組成；目標語導向由語意對等與顯化組成；混用則歸為混合導向。",
-          "Codex 協助分類，並透過可重現的規則檢查保留的源語文字、縮寫、明示說明、組合式源語結構、科學詞綴與多重對等。每筆資料都有信心值與證據說明。這種規則輔助方法具一致性，卻無法理解所有科學義項。專名尤其可能依領域慣例而音譯、意譯或加上類別中心詞。因此，完整 AI 編碼在人工檢視前均視為暫定。",
-          "公開流程包含一組固定隨機樣本：從全部 5,691 筆中以固定亂數種子抽出 50 筆，種子與樣本成員都記錄於可下載資料中。檢視者可把每組樣本與樂詞網搜尋結果及分類規準對照，確認目前策略或標記修正。報告明確區分 AI 分類與人工校對，而不使用無法解釋的品質宣稱。",
+          "Codex 協助翻譯策略分類，並透過可重現規則檢查源語文字、縮寫、明示說明、組合結構、科學詞綴與多重對等。跨地比較另有一層判斷：先把臺灣繁體中文轉為簡體、移除標點，再與中國大陸名稱比較。兩者原字完全相同記為「用詞相同」；轉換後才相同記為「僅字形差異」；一方包含另一方記為「部分重疊」；其餘則為「用詞不同」。",
+          "公開流程包含一組固定隨機樣本：從全部 5,792 筆中以固定亂數種子抽出 50 筆，種子與樣本成員都記錄於可下載資料中。檢視者可把每組樣本與來源及分類規準對照，確認目前策略或標記修正。報告明確區分 AI 分類與人工校對，而不使用無法解釋的品質宣稱。",
           "資料模型讓這些判斷可被檢查。必要欄位記錄英文來源、中文譯文、NAER 詞條、策略與人工校對狀態；選用欄位記錄主要譯法、其他對等詞、翻譯導向、信心值與分類證據。原始 ODS、整理後 CSV 與 JSON 均可下載。這種分離讓讀者能質疑某個分類，同時保留原始紀錄，也讓修正後能重新建置網站。",
         ],
       },
       {
         title: "分析",
         paragraphs: [
-          "桑基圖呈現翻譯導向、五種策略與對等狀態之間的關係。流程視圖讓語料的主要路徑變得可見，而不把結果壓縮成單一百分比。矩形樹圖以嵌套面積呈現同一階層，讓使用者從源語導向或目標語導向進一步查看各策略，以及每個策略中單一與多重對等詞的比例。點選任一視圖會把相應的分類、導向或對等篩選套用到其他全部元件。",
-          "散佈圖比較英文字元長度與主要中文譯法的字數。圖表不把長度當成翻譯品質指標，而是協助觀察某種策略是否傾向形成簡短標籤或較長的描述形式，也讓離群詞條更容易被找到。滑過資料點可查看詞組；點選資料點會選取詞條，顯示來源連結與其他中文譯法。使用者亦可依策略或導向著色，讓同一組分布回答兩個相關問題。",
+          "桑基圖呈現地區、五種策略與對等狀態之間的關係。流程視圖讓兩地語料的主要路徑變得可見，而不把結果壓縮成單一百分比。矩形樹圖預設以地區分組，也可切換成翻譯導向或對等狀態。點選任一視圖會把相應地區、分類或對等篩選套用到其他全部元件。",
+          "散佈圖比較英文字元長度與主要中文譯法的字數，預設依地區著色。圖表不把長度當成品質指標，而是協助觀察某一地區是否傾向簡短標籤或較長的描述形式。點選資料點會顯示另一地區對同一概念的用詞。資料表另可依地區及四種跨地差異篩選。",
           "互動資料表是分析證據的基礎。它列出必要來源、分類、人工校對狀態、主要譯法、全部對等詞、信心值與證據。排序與篩選會同步更新資料表和圖表。CSV 下載包含目前篩選結果；完整整理語料與原始 ODS 也可取得。所有視圖的數字都由同一批瀏覽器內資料計算，避免圖表看似合理卻與表格不一致。",
-          "整體結果顯示，語料以目標語導向的語意對等詞為主，同時有相當規模的源語導向仿譯，而顯化、借譯與混用均較少。這應理解為現行分類方案下的描述性結果，而不是對中文科學翻譯的普遍定律。更有意義的是結構現象：許多官方標籤看似精簡且只有一個答案，實際卻有 965 筆保留多個中文選項。逐列閱讀時這種變異很容易被忽略，把對等狀態與策略連結後則明顯得多。",
+          "配對結果顯示，跨地差異並非單一現象。多數詞組至少共用部分術語，較少部分則使用明顯不同的字詞；另有一些表面差異在繁體轉為簡體後消失。這支持一項有所保留的結論：臺灣與中國大陸食品命名有明顯重疊，但指向同一食物或營養素，不代表一定使用相同術語。",
           "對等狀態的拆分提供另一項限制。單一中文對等詞的詞條中，約 49.8% 被歸為語意對等，45.5% 為仿譯或直譯；多重對等詞的詞條中，語意對等比例約為 65.0%，仿譯比例降至 31.3%。這似乎表示具有數個中文選項的紀錄，較常圍繞詞彙替代，而非明顯平行於源語的結構。這不能證明對等狀態造成某種策略，只顯示兩項特徵在此資料中一起出現，並為後續檢視者提供可檢驗的假設。",
         ],
       },
       {
         title: "結論",
         paragraphs: [
-          "本專題完成三件事。第一，把可下載的 ODS 轉化為具有明確欄位與可重現檔案的雙語語料。第二，透過五類分類規準賦予詞表翻譯研究的解釋，而不只是未分類的清單。第三，把這種解釋轉化為可公開使用的介面，結合搜尋、篩選、視覺化與來源查閱。",
-          "結論有所保留。官方術語同時呈現源語形塑與讀者導向的解法，而多重中文對等詞也使「一個詞只有一個固定譯法」的說法變得複雜。網站讓這種複雜性更容易被檢視、比較與討論。",
+          "本專題完成三件事。第一，把兩份可追溯來源整合為一個具有明確欄位與可重現檔案的地區語料。第二，在保留五類翻譯策略之外，區分字形差異與真正的用詞差異。第三，把這些區分轉化為可公開使用的介面，結合搜尋、地區篩選、視覺化、跨地並列與來源查閱。",
+          "結論有所保留。比較只涵蓋 91 個能精確配對英文名稱的概念，因此是聚焦個案，而非中國大陸食品術語的完整地圖。在這組配對資料中，兩地術語經常相關，但不總是相同。網站讓這些相同、部分重疊與差異更容易被檢視和討論。",
         ],
       },
       {
@@ -457,14 +483,14 @@ export const AI_USE = {
       {
         title: "What AI was asked to do",
         body: [
-          "AI helped parse and clean the ODS, preserve source metadata, draft the translation codebook, propose and apply classification rules, build the bilingual interface and linked visualizations, calculate descriptive summaries, and draft the learning report and this declaration.",
-          "The classification pipeline is static and auditable. Each record includes the assigned category, an evidence note, and a confidence score. The corpus can be regenerated from the original ODS with `scripts/build_corpus.py`.",
+          "AI helped parse the Taiwan ODS and the Mainland food-name CSV, match records by normalized English name, preserve source metadata, normalize Traditional Chinese for comparison, draft the translation codebook, classify terms, build the linked interface, calculate descriptive summaries, and draft the learning report and this declaration.",
+          "The classification pipeline is static and auditable. Each record includes its region, assigned category, evidence note, and confidence score. Running `scripts/import_mainland.py` and then `scripts/build_corpus.py` reconstructs the combined corpus.",
         ],
       },
       {
         title: "What was checked by hand",
         body: [
-          "The source file's four required columns, row count, uniqueness of IDs and English terms, and missing values were checked independently of the website. The 50-entry QA workflow uses a fixed random seed and requires manual comparison with NAER before an entry can be treated as human-checked.",
+          "Both source structures, row counts, IDs, missing values, and the exact-English-name matching rule were checked independently of the website. The 50-entry QA workflow uses a fixed random seed and requires manual comparison with the cited source before an entry can be treated as human-checked.",
           "The user is responsible for completing that 50-entry review and confirming that the report's first-person claims are accurate before submission. Navigation, filters, URL state, chart-table reconciliation, CSV export, and responsive layout are also tested during implementation.",
         ],
       },
@@ -472,7 +498,14 @@ export const AI_USE = {
         title: "Prompts that worked",
         body: [
           "One effective instruction was to separate the principal Chinese rendering from the full list of alternatives, preserving NAER's term-level record while still allowing equivalence analysis.",
-          "Another was to require each visualization to answer a named question and share the same filter state, rather than producing unrelated charts simply to meet a count.",
+          "Another was to normalize Traditional Chinese to Simplified Chinese before coding regional difference, preventing orthographic variation from being counted as a lexical disagreement.",
+        ],
+      },
+      {
+        title: "Sources and permission",
+        body: [
+          "Taiwan terminology comes from NAER's open-data publication. The Mainland comparison uses only 101 matched bilingual name records from the China Food Composition Table dataset; the full nutritional table is not copied into the site.",
+          "The upstream repository provides no open licence. The project owner confirmed permission on 26 November 2026 to publish these matched name records with source attribution.",
         ],
       },
       {
@@ -499,14 +532,14 @@ export const AI_USE = {
       {
         title: "要求 AI 完成的工作",
         body: [
-          "AI 協助解析與清理 ODS、保留來源資訊、起草翻譯分類規準、提出並套用分類規則、建立雙語介面與連動視覺化、計算描述統計，並起草學習報告與本聲明。",
-          "分類流程為靜態且可稽核。每筆紀錄均含指定類別、證據說明與信心值。原始 ODS 可透過 `scripts/build_corpus.py` 重新產生語料。",
+          "AI 協助解析臺灣 ODS 與中國大陸食物名稱 CSV、依正規化英文名稱配對、保留來源資訊、以繁簡轉換支援跨地比較、起草分類規準、編碼詞條、建立連動介面、計算描述統計，並起草學習報告與本聲明。",
+          "分類流程為靜態且可稽核。每筆紀錄均含地區、指定類別、證據說明與信心值。依序執行 `scripts/import_mainland.py` 與 `scripts/build_corpus.py` 可重建合併語料。",
         ],
       },
       {
         title: "人工查證內容",
         body: [
-          "來源檔四個必要欄位、列數、編號與英文詞的唯一性，以及缺漏值，均在網站之外獨立檢查。50 筆校對流程使用固定亂數種子，詞條必須與樂詞網人工比對後才能視為已校對。",
+          "兩份來源的欄位、列數、編號、缺漏值與英文精確配對規則，均在網站之外獨立檢查。50 筆校對流程使用固定亂數種子，詞條必須與所引來源人工比對後才能視為已校對。",
           "學生須完成 50 筆人工檢視，並在提交前確認報告第一人稱陳述屬實。導覽、篩選、URL 狀態、圖表與表格一致性、CSV 匯出及響應式版面亦在製作期間測試。",
         ],
       },
@@ -515,6 +548,13 @@ export const AI_USE = {
         body: [
           "其中一項有效指令，是把主要中文譯法與完整對等詞清單分開，如此既能保留樂詞網的詞條層級，也能分析對等變異。",
           "另一項是指定每種視覺化回答一個明確問題，並共用同一組篩選狀態，而不是為了湊數而製作互不相關的圖表。",
+        ],
+      },
+      {
+        title: "來源與使用許可",
+        body: [
+          "臺灣術語來自樂詞網的開放資料；中國大陸比較只使用《中國食物成分表》資料集中 101 筆配對中英文名稱，網站不複製完整營養成分表。",
+          "上游儲存庫沒有提供開放授權。專題作者已於 2026 年 11 月 26 日確認，可標明來源並公開這些配對名稱紀錄。",
         ],
       },
       {

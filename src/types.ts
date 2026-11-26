@@ -8,9 +8,19 @@ export type CategoryId =
   | "hybrid";
 
 export type OrientationId = "source" | "target" | "mixed";
+export type RegionId = "TW" | "CN";
+export type ComparisonStatus =
+  | "same"
+  | "script_only"
+  | "partial"
+  | "different"
+  | "unpaired";
 
 export interface CorpusEntry {
   id: string;
+  region: RegionId;
+  region_label: string;
+  source_record_id: string;
   source_text: string;
   target_text: string;
   target_primary: string;
@@ -30,6 +40,11 @@ export interface CorpusEntry {
   notes: string;
   qa_sample: boolean;
   duplicate_normalized_term: boolean;
+  english_key: string;
+  food_category: string;
+  matched_taiwan_ids: string[];
+  comparison_status?: ComparisonStatus;
+  comparison_partners?: string[];
 }
 
 export interface CategoryCounts {
@@ -50,8 +65,17 @@ export interface Manifest {
   license: string;
   license_url: string;
   collected: string;
+  mainland_collected: string;
   generated: string;
   rows: number;
+  regions: Record<RegionId, number>;
+  comparison_concepts: number;
+  matched_mainland_rows: number;
+  matched_unique_english_terms: number;
+  mainland_source: string;
+  mainland_source_url: string;
+  mainland_permission: string;
+  mainland_file: string;
   raw_rows: number;
   missing_cells: number;
   multi_equivalent: number;

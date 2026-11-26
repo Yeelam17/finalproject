@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/Sanotsu/china-food-composition-data",
+  "commit": "d15675c27582748307023b7ee7aca2a63fc52756",
+  "source_path": "json_data_v3_20260825_qwen38max_kimi_k3_fixed_en/food_composition_full.csv",
+  "source_url": "https://github.com/Sanotsu/china-food-composition-data/blob/d15675c27582748307023b7ee7aca2a63fc52756/json_data_v3_20260825_qwen38max_kimi_k3_fixed_en/food_composition_full.csv",
+  "retrieved": "2026-11-26",
+  "source_sha256": "7f89bfde478b1ae8a9109eab7d9842e7e87d378a947e3a50b0eaa819c554dcf4",
+  "source_rows": 1677,
+  "matched_rows": 101,
+  "matched_unique_english_terms": 91,
+  "license_note": "The repository declares no open license. The project owner confirmed permission to publish the matched bilingual name records used here; the full nutritional table is not copied."
+}

@@ -1,0 +1,18 @@
+{
+  "sampleRows": 579,
+  "checkedRows": 579,
+  "errors": 0,
+  "errorDetails": [],
+  "regionCounts": {
+    "TW": 569,
+    "CN": 10
+  },
+  "comparisonCounts": {
+    "unpaired": 563,
+    "partial": 5,
+    "same": 6,
+    "different": 4,
+    "script_only": 1
+  },
+  "scope": "Automated source-integrity check only. It confirms that required fields are present and each source pair matches its source snapshot; it does not constitute the required human semantic review."
+}

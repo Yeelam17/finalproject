@@ -11,6 +11,7 @@ import {
   downloadText,
   formatNumber,
   orientationLabel,
+  REGION_META,
 } from "../lib";
 
 interface QaReviewProps {
@@ -130,6 +131,12 @@ export function QaReview({
             </div>
 
             <div className="qa-assessment">
+              <div>
+                <span className="section-kicker">{copy.filterRegion}</span>
+                <strong>
+                  {REGION_META[entry.region][language === "en" ? "en" : "zh"]}
+                </strong>
+              </div>
               <div>
                 <span className="section-kicker">{copy.category}</span>
                 <strong>{categoryLabel(entry.category, language)}</strong>

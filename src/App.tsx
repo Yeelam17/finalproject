@@ -13,7 +13,7 @@ import {
   useQaDecisions,
 } from "./state";
 import type { CorpusEntry, Manifest, QaDecisions, UrlState } from "./types";
-import { asset } from "./lib";
+import { annotateRegionalComparisons, asset } from "./lib";
 
 interface CorpusBundle {
   entries: CorpusEntry[];
@@ -71,7 +71,11 @@ export default function App() {
 
   const entries = useMemo(
     () =>
-      bundle ? applyQaDecisions(bundle.entries, qaDecisions) : [],
+      bundle
+        ? annotateRegionalComparisons(
+            applyQaDecisions(bundle.entries, qaDecisions),
+          )
+        : [],
     [bundle, qaDecisions],
   );
   const language = languageFromParams(hashState.params);
@@ -101,6 +105,8 @@ export default function App() {
       ["human", "human"],
       ["equivalence", "equiv"],
       ["orientation", "orientation"],
+      ["region", "region"],
+      ["comparison", "compare"],
     ];
     for (const [key, param] of pairs) {
       if (!(key in patch)) continue;
@@ -158,6 +164,7 @@ export default function App() {
     page = (
       <CodebookPage
         manifest={bundle.manifest}
+        entries={entries}
         language={language}
         params={hashState.params}
         navigate={navigate}
