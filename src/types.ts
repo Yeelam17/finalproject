@@ -43,6 +43,10 @@ export interface CorpusEntry {
   english_key: string;
   food_category: string;
   matched_taiwan_ids: string[];
+  review_status?: "unreviewed" | "confirmed" | "corrected" | "correction";
+  review_note?: string;
+  reviewed_at?: string;
+  source_target_text?: string;
   comparison_status?: ComparisonStatus;
   comparison_partners?: string[];
 }
@@ -86,6 +90,14 @@ export interface Manifest {
   orientations: Record<OrientationId, number>;
   classification_method: string;
   human_checked: number;
+  human_review: {
+    review_file: string;
+    decisions: number;
+    confirmed: number;
+    corrected: number;
+    unresolved: number;
+    human_checked: number;
+  };
 }
 
 export interface UrlState {

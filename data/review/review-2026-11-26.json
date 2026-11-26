@@ -1,0 +1,259 @@
+﻿{
+  "title": "50-entry human review",
+  "generatedAt": "2026-11-26T15:15:57.563Z",
+  "seed": 2026,
+  "sampleSize": 50,
+  "reviewed": 50,
+  "decisions": {
+    "21409664": {
+      "status": "correction",
+      "note": "",
+      "updatedAt": "2026-11-26T09:19:11.842Z"
+    },
+    "21409840": {
+      "status": "correction",
+      "note": "需要添加註解解釋",
+      "updatedAt": "2026-11-26T09:19:48.480Z"
+    },
+    "21409893": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:03.759Z"
+    },
+    "21410080": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:13.425Z"
+    },
+    "21410174": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:17.373Z"
+    },
+    "21410252": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:21.042Z"
+    },
+    "21410298": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:34.143Z"
+    },
+    "21410372": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:20:36.726Z"
+    },
+    "21410488": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:21:00.196Z"
+    },
+    "21410620": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:21:15.835Z"
+    },
+    "21410905": {
+      "status": "correction",
+      "note": "",
+      "updatedAt": "2026-11-26T09:21:53.942Z"
+    },
+    "21410914": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:22:21.246Z"
+    },
+    "21410924": {
+      "status": "correction",
+      "note": "",
+      "updatedAt": "2026-11-26T09:22:36.492Z"
+    },
+    "21410938": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:23:10.125Z"
+    },
+    "21411022": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:23:26.647Z"
+    },
+    "21411025": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:23:40.492Z"
+    },
+    "21411312": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:23:54.340Z"
+    },
+    "21411555": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:24:05.377Z"
+    },
+    "21411598": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:24:18.543Z"
+    },
+    "21411608": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:24:49.643Z"
+    },
+    "21411661": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:24:53.161Z"
+    },
+    "21411686": {
+      "status": "correction",
+      "note": "可以備注俗稱“蠶豆症”",
+      "updatedAt": "2026-11-26T09:25:22.176Z"
+    },
+    "21411787": {
+      "status": "correction",
+      "note": "醃製鮭魚",
+      "updatedAt": "2026-11-26T09:25:44.862Z"
+    },
+    "21411809": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:25:58.575Z"
+    },
+    "21411889": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:26:18.498Z"
+    },
+    "21411895": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:26:32.779Z"
+    },
+    "21412062": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:26:45.659Z"
+    },
+    "21412089": {
+      "status": "correction",
+      "note": "唾液分泌過多",
+      "updatedAt": "2026-11-26T09:27:05.077Z"
+    },
+    "21412404": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:27:09.209Z"
+    },
+    "21412437": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T09:27:18.778Z"
+    },
+    "21412467": {
+      "status": "correction",
+      "note": "瀉藥",
+      "updatedAt": "2026-11-26T09:28:15.696Z"
+    },
+    "21412732": {
+      "status": "correction",
+      "note": "主要中文譯法改為動物的口",
+      "updatedAt": "2026-11-26T15:11:35.472Z"
+    },
+    "21412992": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:11:46.366Z"
+    },
+    "21413022": {
+      "status": "correction",
+      "note": "加入備注（nm）",
+      "updatedAt": "2026-11-26T15:12:14.903Z"
+    },
+    "21413115": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:12:26.894Z"
+    },
+    "21413364": {
+      "status": "correction",
+      "note": "斑蘭",
+      "updatedAt": "2026-11-26T15:12:47.152Z"
+    },
+    "21413482": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:12:57.527Z"
+    },
+    "21413524": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:01.581Z"
+    },
+    "21413549": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:04.380Z"
+    },
+    "21413823": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:16.195Z"
+    },
+    "21413937": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:20.329Z"
+    },
+    "21414096": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:27.761Z"
+    },
+    "21414234": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:13:44.789Z"
+    },
+    "21414352": {
+      "status": "correction",
+      "note": "山梨糖醇酐酯",
+      "updatedAt": "2026-11-26T15:14:02.671Z"
+    },
+    "21414396": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:14:11.564Z"
+    },
+    "21414607": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:14:20.764Z"
+    },
+    "21414975": {
+      "status": "correction",
+      "note": "水餅乾",
+      "updatedAt": "2026-11-26T15:14:46.368Z"
+    },
+    "21414998": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:14:59.189Z"
+    },
+    "21415117": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:15:11.748Z"
+    },
+    "CN-048031": {
+      "status": "confirmed",
+      "note": "",
+      "updatedAt": "2026-11-26T15:15:23.329Z"
+    }
+  }
+}

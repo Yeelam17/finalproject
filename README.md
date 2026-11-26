@@ -12,6 +12,7 @@ A bilingual corpus explorer comparing Taiwan's NAER food-science terminology wit
 - English and Traditional Chinese interfaces, report, and codebook
 - Downloadable ODS, clean CSV, JSON, and filtered table exports
 - Built-in fixed-seed 50-entry human-review workflow
+- Current human review: 37 confirmed, 10 corrected and resolved, 3 awaiting correction detail
 
 ## Local development
 
@@ -30,6 +31,8 @@ The public URL is `https://yeelam17.github.io/finalproject/`.
 The Taiwan ODS and matched Mainland name snapshot are preserved under `public/data/source/`. The reproducible build scripts write the cleaned JSON, CSV, QA sample, and manifest under `public/data/`.
 
 Run `pnpm check:data` to validate record counts, required fields, category totals, the 50-record QA sample, source checksum, and CSV/JSON reconciliation.
+
+The exported review decisions are stored under `data/review/`. A correction flag without a concrete correction remains `human_checked: no`, so the three unresolved records are not presented as verified.
 
 NAER content is reused under its open-data declaration and must retain attribution to the National Academy for Educational Research (NAER) and the 樂詞網 terminology database.
 

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "public" / "data"
+REVIEW = ROOT / "data" / "review" / "review-2026-11-26.json"
 CATEGORIES = {
     "borrowing",
     "calque_literal",
@@ -79,6 +80,20 @@ def main() -> None:
     require(
         sum(entry["human_checked"] for entry in entries) == manifest["human_checked"],
         "Human-checked count does not reconcile",
+    )
+    review = json.loads(REVIEW.read_text(encoding="utf-8-sig"))
+    decision_ids = set(review["decisions"])
+    qa_ids = {entry["id"] for entry in entries if entry["qa_sample"]}
+    require(decision_ids == qa_ids, "Review decisions do not match the QA sample")
+    require(
+        manifest["human_review"]["decisions"] == len(decision_ids) == 50,
+        "Human-review decision count does not reconcile",
+    )
+    require(
+        manifest["human_review"]["human_checked"]
+        == manifest["human_checked"]
+        == sum(entry["human_checked"] for entry in entries),
+        "Resolved human-review count does not reconcile",
     )
 
     source = DATA / "source" / manifest["source_file"]

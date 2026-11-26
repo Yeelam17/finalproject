@@ -451,6 +451,12 @@ export function TermDetail({
         <span>{language === "en" ? "Classification evidence" : "分類證據"}</span>
         <p>{entry.category_evidence}</p>
       </div>
+      {entry.review_note && (
+        <div className="detail-field">
+          <span>{language === "en" ? "Human review note" : "人工校對備註"}</span>
+          <p>{entry.review_note}</p>
+        </div>
+      )}
       <div className="detail-field">
         <span>{language === "en" ? "Source" : "來源"}</span>
         <p>{entry.source}</p>

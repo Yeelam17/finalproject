@@ -22,9 +22,17 @@
   "mainland_source": "data/source/china_food_composition_manifest.json",
   "mainland_source_url": "https://github.com/Sanotsu/china-food-composition-data/blob/d15675c27582748307023b7ee7aca2a63fc52756/json_data_v3_20260825_qwen38max_kimi_k3_fixed_en/food_composition_full.csv",
   "mainland_permission": "Project owner confirmed permission on 2026-11-26 to publish the matched bilingual food-name records. The full nutritional table is not included.",
+  "human_review": {
+    "review_file": "data/review/review-2026-11-26.json",
+    "decisions": 50,
+    "confirmed": 37,
+    "corrected": 10,
+    "unresolved": 3,
+    "human_checked": 47
+  },
   "raw_rows": 5691,
   "missing_cells": 0,
-  "multi_equivalent": 965,
+  "multi_equivalent": 968,
   "duplicate_normalized_terms": 9,
   "qa_size": 50,
   "qa_seed": 2026,
@@ -41,5 +49,5 @@
     "mixed": 155
   },
   "classification_method": "Codex-assisted, deterministic rule audit, version 1.0",
-  "human_checked": 0
+  "human_checked": 47
 }

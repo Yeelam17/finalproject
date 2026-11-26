@@ -334,6 +334,9 @@ export const makeCsv = (entries: CorpusEntry[]): string => {
     "source_url",
     "english_key",
     "comparison_status",
+    "review_status",
+    "review_note",
+    "reviewed_at",
   ];
   const escape = (value: unknown): string => {
     const text = String(value ?? "");

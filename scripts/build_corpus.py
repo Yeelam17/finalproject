@@ -23,6 +23,8 @@ MAINLAND_SOURCE = ROOT / "data" / "source" / "china_food_composition_matched.csv
 MAINLAND_MANIFEST = (
     ROOT / "data" / "source" / "china_food_composition_manifest.json"
 )
+REVIEW_SOURCE = ROOT / "data" / "review" / "review-2026-11-26.json"
+REVIEW_CORRECTIONS = ROOT / "data" / "review" / "corrections-2026-11-26.json"
 OUT = ROOT / "public" / "data"
 RAW_OUT = OUT / "source"
 COLLECTED = "2026-11-24"
@@ -439,6 +441,9 @@ def add_mainland_entries(entries: list[dict]) -> None:
                 "category_confidence": confidence,
                 "category_evidence": evidence,
                 "human_checked": False,
+                "review_status": "unreviewed",
+                "review_note": "",
+                "reviewed_at": "",
                 "multi_equivalent": len(alternatives) > 1,
                 "unit": "term",
                 "key_term": source_text,
@@ -450,6 +455,72 @@ def add_mainland_entries(entries: list[dict]) -> None:
                 "matched_taiwan_ids": matched_ids,
             }
         )
+
+
+def apply_human_review(entries: list[dict]) -> dict:
+    """Apply the exported decisions and the explicitly resolved corrections."""
+    if not REVIEW_SOURCE.exists() or not REVIEW_CORRECTIONS.exists():
+        raise FileNotFoundError("Missing human-review source files")
+    exported = json.loads(REVIEW_SOURCE.read_text(encoding="utf-8-sig"))
+    decisions = exported["decisions"]
+    corrections = json.loads(
+        REVIEW_CORRECTIONS.read_text(encoding="utf-8")
+    )["corrections"]
+    by_id = {entry["id"]: entry for entry in entries}
+
+    for entry_id, decision in decisions.items():
+        entry = by_id.get(entry_id)
+        if not entry:
+            raise ValueError(f"Review references unknown corpus ID: {entry_id}")
+        entry["review_status"] = decision["status"]
+        entry["reviewed_at"] = decision["updatedAt"]
+        entry["review_note"] = decision.get("note", "")
+        if decision["status"] == "confirmed":
+            entry["human_checked"] = True
+            continue
+
+        correction = corrections.get(entry_id)
+        if not correction:
+            # A correction flag without a proposed value remains deliberately unchecked.
+            entry["human_checked"] = False
+            entry["review_note"] = (
+                entry["review_note"]
+                or "Human reviewer flagged this entry but supplied no correction detail."
+            )
+            continue
+
+        if correction.get("target"):
+            entry["source_target_text"] = entry["target_text"]
+            entry["target_text"] = correction["target"]
+            primary, alternatives = primary_target(correction["target"])
+            entry["target_primary"] = primary
+            entry["target_alternatives"] = alternatives
+            entry["multi_equivalent"] = len(alternatives) > 1
+            category, evidence, confidence, _ = classify(
+                entry["source_text"], correction["target"]
+            )
+            entry["category"] = category
+            entry["orientation"] = CATEGORY_ORIENTATION[category]
+            entry["category_confidence"] = confidence
+            entry["category_evidence"] = evidence
+        entry["review_note"] = correction.get("note", entry["review_note"])
+        entry["review_status"] = "corrected"
+        entry["human_checked"] = True
+
+    return {
+        "review_file": REVIEW_SOURCE.relative_to(ROOT).as_posix(),
+        "decisions": len(decisions),
+        "confirmed": sum(
+            entry.get("review_status") == "confirmed" for entry in entries
+        ),
+        "corrected": sum(
+            entry.get("review_status") == "corrected" for entry in entries
+        ),
+        "unresolved": sum(
+            entry.get("review_status") == "correction" for entry in entries
+        ),
+        "human_checked": sum(entry["human_checked"] for entry in entries),
+    }
 
 
 def build_rows() -> tuple[list[dict], list[list[str]]]:
@@ -490,6 +561,9 @@ def build_rows() -> tuple[list[dict], list[list[str]]]:
                 "category_confidence": confidence,
                 "category_evidence": evidence,
                 "human_checked": False,
+                "review_status": "unreviewed",
+                "review_note": "",
+                "reviewed_at": "",
                 "multi_equivalent": len(alternatives) > 1,
                 "unit": "term",
                 "key_term": source_text,
@@ -502,13 +576,14 @@ def build_rows() -> tuple[list[dict], list[list[str]]]:
             }
         )
     add_mainland_entries(entries)
+    review_summary = apply_human_review(entries)
     entries.sort(key=lambda item: item["id"])
     seen_normalized: set[str] = set()
     for entry in entries:
         normalized = f"{entry['region']}:{entry['source_text'].casefold()}"
         entry["duplicate_normalized_term"] = normalized in seen_normalized
         seen_normalized.add(normalized)
-    return entries, raw_rows
+    return entries, raw_rows, review_summary
 
 
 def add_qa_sample(entries: list[dict]) -> None:
@@ -535,7 +610,7 @@ def write_json(path: Path, value: object, *, pretty: bool = False) -> None:
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     RAW_OUT.mkdir(parents=True, exist_ok=True)
-    entries, raw_rows = build_rows()
+    entries, raw_rows, review_summary = build_rows()
     add_qa_sample(entries)
 
     ids = [entry["id"] for entry in entries]
@@ -602,6 +677,10 @@ def main() -> None:
         "english_key",
         "food_category",
         "matched_taiwan_ids",
+        "review_status",
+        "review_note",
+        "reviewed_at",
+        "source_target_text",
         "qa_sample",
     ]
     with (OUT / "corpus.csv").open("w", encoding="utf-8-sig", newline="") as handle:
@@ -652,6 +731,7 @@ def main() -> None:
             "Project owner confirmed permission on 2026-11-26 to publish the "
             "matched bilingual food-name records. The full nutritional table is not included."
         ),
+        "human_review": review_summary,
         "raw_rows": len(raw_rows) - 1,
         "missing_cells": 0,
         "multi_equivalent": sum(entry["multi_equivalent"] for entry in entries),

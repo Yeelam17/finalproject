@@ -1,0 +1,47 @@
+{
+  "review_file": "data/review/review-2026-11-26.json",
+  "corrections": {
+    "21409840": {
+      "note": "Human reviewer requested explanatory context. The official rendering 阿金膳食法 is retained and explained as a low-carbohydrate diet."
+    },
+    "21411686": {
+      "note": "Human reviewer requested the common name. This condition is commonly called 蠶豆症 in Traditional Chinese."
+    },
+    "21411787": {
+      "target": "醃製鮭魚",
+      "note": "Human reviewer selected the more general rendering 醃製鮭魚; the source entry 蒔蘿醃鮭魚 was more specific."
+    },
+    "21412089": {
+      "target": "唾液分泌過多",
+      "note": "Human reviewer selected 唾液分泌過多."
+    },
+    "21412467": {
+      "target": "瀉藥",
+      "note": "Human reviewer selected 瀉藥."
+    },
+    "21412732": {
+      "target": "動物的口；鰾；喉；食道；真胃；嗉囊",
+      "note": "Human reviewer requested 動物的口 as the principal rendering and retained the remaining official equivalents."
+    },
+    "21413022": {
+      "note": "The abbreviation nm may be used as an explanatory note, but is not added as a Chinese equivalent."
+    },
+    "21413364": {
+      "target": "斑蘭；香蘭",
+      "note": "Human reviewer selected 斑蘭 as the principal rendering and retained 香蘭."
+    },
+    "21414352": {
+      "target": "山梨糖醇酐酯；山梨醇酯",
+      "note": "Human reviewer selected the more explicit chemical rendering 山梨糖醇酐酯."
+    },
+    "21414975": {
+      "target": "水餅乾；水薄餅乾",
+      "note": "Human reviewer selected the shorter rendering 水餅乾."
+    }
+  },
+  "unresolved": {
+    "21409664": "Marked for correction without a note.",
+    "21410905": "Marked for correction without a note.",
+    "21410924": "Marked for correction without a note."
+  }
+}
